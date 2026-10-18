@@ -1,0 +1,517 @@
+/* Emulsion Visual Design System */
+:root {
+  --emul-wall: #EFE7DA;
+  --emul-ink: #1C1815;
+  --emul-sub: #6B6156;
+  --emul-nav: rgba(28, 24, 21, 0.70);
+  --emul-hair: rgba(28, 24, 21, 0.22);
+  --emul-accent: #CE4429;
+  --emul-card: #FCF8F1;
+  --emul-panel-ink: #FDF6EC;
+  --emul-shadow-near: 0 26px 48px -18px rgba(50, 34, 22, 0.42), 0 3px 10px rgba(50, 34, 22, 0.16);
+  --emul-shadow-far: 0 14px 26px -12px rgba(50, 34, 22, 0.30), 0 2px 6px rgba(50, 34, 22, 0.12);
+}
+
+.emul-theme-dark {
+  --emul-wall: #15120F;
+  --emul-ink: #EFE6D7;
+  --emul-sub: #9A8F80;
+  --emul-nav: rgba(239, 230, 215, 0.70);
+  --emul-hair: rgba(239, 230, 215, 0.22);
+  --emul-accent: #E05A3E;
+  --emul-card: #221D19;
+  --emul-panel-ink: #15120F;
+  --emul-shadow-near: 0 26px 48px -18px rgba(0, 0, 0, 0.7), 0 3px 10px rgba(0, 0, 0, 0.4);
+  --emul-shadow-far: 0 14px 26px -12px rgba(0, 0, 0, 0.5), 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+.emul-root {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+  user-select: none;
+  background-color: var(--emul-wall);
+  color: var(--emul-ink);
+  transition: background-color 0.5s ease, color 0.5s ease;
+  -webkit-font-smoothing: antialiased;
+  touch-action: none;
+}
+
+.emul-root *, .emul-root *::before, .emul-root *::after {
+  box-sizing: border-box;
+}
+
+/* Copy block styles */
+.emul-mask {
+  display: block;
+  overflow: hidden;
+}
+
+.emul-mask > * {
+  display: block;
+  will-change: transform, opacity;
+}
+
+.emul-eyebrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: clamp(10px, 0.82vw, 12px);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--emul-sub);
+  margin-bottom: 0.8em;
+  font-weight: 600;
+}
+
+.emul-head {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(24px, 2.5vw, 42px);
+  line-height: 1.18;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  color: var(--emul-ink);
+  margin: 0;
+}
+
+.emul-rule {
+  height: 1px;
+  width: 46%;
+  background: var(--emul-ink);
+  opacity: 0.45;
+  margin-top: 1.4em;
+}
+
+.emul-index {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: clamp(10px, 0.75vw, 12px);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--emul-accent);
+  margin-bottom: 0.8em;
+  font-weight: 700;
+}
+
+.emul-body {
+  font-family: 'Inter', -apple-system, sans-serif;
+  font-size: clamp(12px, 0.95vw, 15px);
+  line-height: 1.62;
+  color: var(--emul-sub);
+  margin: 0;
+  max-width: 36ch;
+}
+
+.emul-statement {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(18px, 2.2vw, 36px);
+  line-height: 1.2;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  text-transform: uppercase;
+  color: var(--emul-ink);
+  margin: 0;
+}
+
+/* Card / Plate styles */
+.emul-plate {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform-origin: 50% 0;
+  cursor: grab;
+  user-select: none;
+  -webkit-user-select: none;
+  will-change: transform;
+  opacity: 1;
+}
+
+.emul-plate:active {
+  cursor: grabbing;
+}
+
+.emul-inner {
+  transform-origin: 50% 0;
+  will-change: transform;
+}
+
+.emul-card {
+  background: var(--emul-card);
+  padding: 10px 10px 14px 10px;
+  border-radius: 2px;
+  display: flex;
+  flex-direction: column;
+  transition: box-shadow 0.3s ease, border-color 0.3s ease;
+  box-shadow: var(--emul-shadow-far);
+  border: 1px solid rgba(28, 24, 21, 0.08);
+}
+
+.emul-theme-dark .emul-card {
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.emul-win {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+  background: #0d0b0a;
+  border-radius: 1px;
+}
+
+.emul-win img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  user-select: none;
+  -webkit-user-drag: none;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.emul-plate:hover .emul-win img {
+  transform: scale(1.05);
+}
+
+/* Caption bar */
+.emul-chin {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 2;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 0.8em;
+  padding: 2.2em 0.85em 0.7em;
+  font-family: 'Geist', 'Inter', -apple-system, sans-serif;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.95);
+  background: linear-gradient(to top, rgba(12, 10, 8, 0.85) 0%, rgba(12, 10, 8, 0.4) 60%, transparent 100%);
+  overflow: hidden;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.32s ease;
+}
+
+.emul-chin-cap {
+  transform: translateY(45%);
+  transition: transform 0.38s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.emul-chin-cap em {
+  font-style: normal;
+  opacity: 0.72;
+  font-weight: 400;
+}
+
+.emul-chin-num {
+  opacity: 0.75;
+  font-size: 10px;
+  font-family: 'JetBrains Mono', monospace;
+  flex: none;
+}
+
+.emul-plate:hover .emul-chin {
+  opacity: 1;
+}
+
+.emul-plate:hover .emul-chin-cap {
+  transform: translateY(0);
+}
+
+/* Chrome UI */
+.emul-chrome {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 100;
+}
+
+.emul-chrome > * {
+  pointer-events: auto;
+}
+
+.emul-home, .emul-nav button, .emul-scroll, .emul-view-toggle {
+  text-shadow: 0 0 4px var(--emul-wall), 0 0 8px var(--emul-wall), 0 0 16px var(--emul-wall);
+}
+
+.emul-home {
+  position: absolute;
+  left: clamp(16px, 2.6vw, 44px);
+  top: clamp(16px, 2.4vw, 34px);
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  font-family: 'Geist', 'Inter', -apple-system, sans-serif;
+  font-size: clamp(10px, 0.74vw, 12px);
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--emul-ink);
+  transition: opacity 0.25s ease;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 0.6em;
+}
+
+.emul-home:hover {
+  opacity: 0.65;
+}
+
+.emul-nav {
+  position: absolute;
+  right: clamp(16px, 2.6vw, 44px);
+  top: clamp(16px, 2.4vw, 34px);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.45em;
+}
+
+.emul-nav button {
+  background: none;
+  border: 0;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  font-family: 'Geist', 'Inter', -apple-system, sans-serif;
+  font-size: clamp(10px, 0.74vw, 12px);
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--emul-nav);
+  transition: color 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.emul-nav button:hover {
+  color: var(--emul-ink);
+}
+
+.emul-nav button.is-on {
+  color: var(--emul-ink);
+  font-weight: 600;
+}
+
+.emul-nav button::before {
+  content: "";
+  width: 0;
+  height: 1.5px;
+  margin-right: 0;
+  background: var(--emul-accent);
+  opacity: 0;
+  flex: none;
+  transition: width 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+              margin-right 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+              opacity 0.4s ease;
+}
+
+.emul-nav button.is-on::before {
+  width: 16px;
+  margin-right: 0.65em;
+  opacity: 1;
+}
+
+.emul-scroll {
+  position: absolute;
+  right: clamp(16px, 2.6vw, 44px);
+  bottom: clamp(16px, 2.4vw, 34px);
+  display: flex;
+  align-items: center;
+  gap: 0.9em;
+  font-family: 'Geist', 'Inter', -apple-system, sans-serif;
+  font-size: clamp(9px, 0.68vw, 11px);
+  font-weight: 500;
+  line-height: 1.35;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--emul-nav);
+}
+
+.emul-scroll-rule {
+  width: clamp(20px, 2.4vw, 36px);
+  height: 1px;
+  background: currentColor;
+  opacity: 0.5;
+  flex: none;
+}
+
+/* Minimalist Text-Only Bottom Department Navigation */
+.emul-bottom-nav {
+  position: fixed;
+  bottom: clamp(20px, 3.2vh, 36px);
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(16px, 3vw, 44px);
+  z-index: 100;
+  pointer-events: auto;
+  white-space: nowrap;
+  user-select: none;
+}
+
+.emul-bottom-nav button {
+  background: none;
+  border: 0;
+  cursor: pointer;
+  padding: 8px 6px 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65em;
+  font-family: 'Geist', 'Inter', -apple-system, sans-serif;
+  font-size: clamp(10.5px, 0.78vw, 13px);
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--emul-sub);
+  text-shadow: 0 0 4px var(--emul-wall), 0 0 8px var(--emul-wall), 0 0 16px var(--emul-wall);
+  transition: color 0.35s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.35s ease;
+  position: relative;
+}
+
+.emul-bottom-nav button .emul-nav-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.88em;
+  letter-spacing: 0.14em;
+  opacity: 0.6;
+  transition: opacity 0.3s ease, color 0.3s ease;
+}
+
+.emul-bottom-nav button:hover {
+  color: var(--emul-ink);
+}
+
+.emul-bottom-nav button:hover .emul-nav-num {
+  opacity: 1;
+}
+
+.emul-bottom-nav button.is-on {
+  color: var(--emul-accent);
+  font-weight: 700;
+}
+
+.emul-bottom-nav button.is-on .emul-nav-num {
+  color: var(--emul-accent);
+  opacity: 1;
+}
+
+/* Subtle editorial accent underline for the active department */
+.emul-bottom-nav button::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 2px;
+  background: var(--emul-accent);
+  border-radius: 1px;
+  transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.emul-bottom-nav button.is-on::after {
+  width: 100%;
+}
+
+@media (max-width: 640px) {
+  .emul-bottom-nav {
+    gap: 14px;
+    padding: 0 14px;
+    max-width: 96vw;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    bottom: 16px;
+  }
+  .emul-bottom-nav::-webkit-scrollbar {
+    display: none;
+  }
+  .emul-bottom-nav button {
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    padding: 6px 3px 8px;
+  }
+}
+
+.emul-view-toggle {
+  position: absolute;
+  left: clamp(16px, 2.6vw, 44px);
+  bottom: clamp(16px, 2.4vw, 34px);
+  display: flex;
+  align-items: center;
+  gap: 1.2em;
+  font-family: 'Geist', 'Inter', -apple-system, sans-serif;
+  font-size: clamp(9px, 0.68vw, 11px);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--emul-nav);
+}
+
+.emul-theme-btn {
+  background: none;
+  border: 1px solid var(--emul-hair);
+  border-radius: 999px;
+  padding: 4px 12px;
+  color: var(--emul-ink);
+  font-family: inherit;
+  font-size: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.emul-theme-btn:hover {
+  border-color: var(--emul-accent);
+  color: var(--emul-accent);
+}
+
+/* Tablet & Mobile Media Queries */
+@media (max-width: 1024px) {
+  .emul-nav {
+    top: clamp(16px, 3vw, 24px);
+    gap: 0.4em;
+  }
+  .emul-head {
+    font-size: clamp(22px, 3.8vw, 34px);
+  }
+}
+
+@media (max-width: 640px) {
+  .emul-nav {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 0.6em;
+    max-width: 65%;
+  }
+  .emul-nav button::before {
+    display: none;
+  }
+  .emul-nav button.is-on {
+    color: var(--emul-accent);
+  }
+  .emul-scroll {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .emul-plate {
+    cursor: default;
+  }
+}
