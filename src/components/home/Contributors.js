@@ -143,7 +143,7 @@ export const Contributors = () => {
           <div className="flex flex-wrap items-center justify-between gap-4">
             <div className="flex items-center gap-3">
               <Stamp rotate={-4}>core team</Stamp>
-              <p className="font-mono text-xs text-pencil">{TEAM.length} members · drag them</p>
+              <p className="font-mono text-xs text-pencil">{TEAM.length} members · drag them · click for LinkedIn</p>
             </div>
             <StickerButton to="/team" bg="var(--highlight)" rotate={1.5}>meet the whole team →</StickerButton>
           </div>
@@ -159,16 +159,30 @@ export const Contributors = () => {
               const s = scatter(i);
               const tone = DEPT_TONE[m.dept];
               return (
-                <figure key={`${m.dept}-${m.name}`} className="avatar absolute flex flex-col items-center cursor-grab active:cursor-grabbing" style={{ left: s.left, top: s.top }} data-r={s.r}>
+                <a
+                  key={`${m.dept}-${m.name}`}
+                  href={m.linkedin}
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label={`${m.name} on LinkedIn`}
+                  className="avatar absolute flex flex-col items-center cursor-grab active:cursor-grabbing"
+                  style={{ left: s.left, top: s.top }}
+                  data-r={s.r}
+                  data-linkedin={m.linkedin}
+                  onClick={(e) => {
+                    // Desktop GSAP drag handles the open on tap-without-drag.
+                    if (window.matchMedia('(pointer: fine)').matches) e.preventDefault();
+                  }}
+                >
                   <div className="avatar-img relative">
-                    <img src={m.img} alt={m.name} loading="lazy" decoding="async" className="w-24 h-24 sm:w-28 sm:h-28 rounded-full object-cover object-top border-[3px] border-ink shadow-[4px_4px_0_var(--ink)]" style={{ background: tone }} />
+                    <img src={m.img} alt={m.name} loading="lazy" decoding="async" draggable={false} className="w-24 h-24 sm:w-28 sm:h-28 rounded-full object-cover object-top border-[3px] border-ink shadow-[4px_4px_0_var(--ink)]" style={{ background: tone }} />
                     {isLead(m) && <span className="absolute -top-1 -right-1 w-7 h-7 rounded-full border-2 border-ink bg-marker text-paper text-sm flex items-center justify-center" title={m.role}>★</span>}
                   </div>
                   <figcaption className="mt-2 text-center">
                     <span className="block font-mono text-[0.68rem] px-2.5 py-1 border-2 border-ink whitespace-nowrap font-bold" style={{ background: tone }}>{m.name.split(' ')[0]}</span>
                     <span className="block mt-1 font-hand text-base leading-none text-pencil">{m.role}</span>
                   </figcaption>
-                </figure>
+                </a>
               );
             })}
           </div>
