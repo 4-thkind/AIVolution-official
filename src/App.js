@@ -20,8 +20,8 @@ const ResearchPage = lazy(() =>
 const RouteFallback = ({ paper }) => <div className={`min-h-screen ${paper ? "bg-paper" : "bg-dark"}`} aria-hidden="true" />;
 
 function App() {
-  // Every route is the notebook now; the dark chrome is kept for any future page that wants it.
-  useLocation();
+  const location = useLocation();
+  const isImmersive = location.pathname === "/team" || location.pathname === "/events";
   const variant = "paper";
   return (
     <div className={`relative min-h-screen ${variant === "paper" ? "text-ink bg-paper" : "text-white"}`}>
@@ -29,7 +29,7 @@ function App() {
 
       <div className="relative z-10">
         <ScrollToTop />
-        <NavBar variant={variant} />
+        {!isImmersive && <NavBar variant={variant} />}
 
         <Suspense fallback={<RouteFallback paper={variant === "paper"} />}>
           <Routes>
@@ -40,10 +40,10 @@ function App() {
           </Routes>
         </Suspense>
 
-        <Footer variant={variant} />
+        {!isImmersive && <Footer variant={variant} />}
       </div>
 
-      <ScrollToTopButton paper={variant === "paper"} />
+      {!isImmersive && <ScrollToTopButton paper={variant === "paper"} />}
     </div>
   );
 }

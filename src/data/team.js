@@ -12,9 +12,7 @@ export const TEAM_MEMBERS = {
     { name: 'Diwakar', role: 'Tech Head', img: 'https://i.postimg.cc/fyy0vGm4/Diwakar.jpg' },
     { name: 'Kriti', role: 'Developer', img: 'https://i.postimg.cc/fyqYnzZ6/kriti.jpg' },
     { name: 'Rahul', role: 'President', img: 'https://i.postimg.cc/SNwzWtsy/rahul.jpg' },
-    { name: 'Falak', role: 'Developer', img: 'https://i.postimg.cc/m2xH95hW/falak.jpg' },
     { name: 'Aparna', role: 'Developer', img: 'https://i.postimg.cc/MpSVCF8X/aparna.jpg' },
-    { name: 'Ashwani Jha', role: 'Developer', img: 'https://i.postimg.cc/NFb0hbDJ/ashwini.jpg' },
     { name: 'Sumit Bhatt', role: 'Developer', img: 'https://i.postimg.cc/9XLCpJZ5/sumit.jpg' },
   ],
   'event-mgmt': [
@@ -22,6 +20,7 @@ export const TEAM_MEMBERS = {
     { name: 'Parth', role: 'Event Head', img: 'https://i.postimg.cc/dt7yZKJC/parth.jpg' },
     { name: 'Sumit Kumar', role: 'Event Executive', img: 'https://i.postimg.cc/6pTWjhXQ/sumit-kumar.png' },
     { name: 'Kanishka Bhardwaj', role: 'Event Member', img: 'https://i.postimg.cc/1XyzYbGq/kanishka.jpg' },
+    { name: 'Ashwani Jha', role: 'Event Member', img: 'https://i.postimg.cc/NFb0hbDJ/ashwini.jpg' },
   ],
   'social-media': [
     { name: 'Apoorva', role: 'Vice President', img: 'https://i.postimg.cc/PxzBMchy/apoorva.jpg' },
@@ -32,6 +31,7 @@ export const TEAM_MEMBERS = {
     { name: 'Sharad', role: 'PR Head', img: 'https://i.postimg.cc/pXJ1SBBd/Whats-App-Image-2026-09-15-at-12-49-31.jpg' },
     { name: 'Bharti', role: 'PR Executive', img: 'https://i.postimg.cc/gkf9S5Jw/bharti.jpg' },
     { name: 'Vansh', role: 'PR Member', img: 'https://i.postimg.cc/WpYcrtc2/vansh.jpg' },
+    { name: 'Falak', role: 'PR Member', img: 'https://i.postimg.cc/m2xH95hW/falak.jpg' },
   ],
 };
 
