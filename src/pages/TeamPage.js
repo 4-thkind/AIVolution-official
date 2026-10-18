@@ -1,123 +1,96 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
+import { useGSAP } from '@gsap/react';
+import { gsap, prefersReducedMotion } from '../lib/gsap';
+import { useReveal } from '../hooks/useReveal';
+import { TEAM, TEAM_DEPARTMENTS, DEPT_TONE, isOfficeBearer } from '../data/team';
+import { SectionLabel, Hand, Tape, PostIt, StickerButton, Perforation, WHATSAPP } from '../components/home/scrap';
+import { MemberCard } from '../components/team/MemberCard';
 
-const departments = [
-  { key: 'tech-dev', label: 'Tech & Dev', id: 'MOD_01' },
-  { key: 'event-mgmt', label: 'Event Management', id: 'MOD_02' },
-  { key: 'social-media', label: 'Social Media', id: 'MOD_03' },
-  { key: 'public-relations', label: 'Public Relations', id: 'MOD_04' },
-];
-
-const teamMembers = {
-  'tech-dev': [
-    { name: 'Ishan', role: 'Developer', img: 'https://i.postimg.cc/VvJdtjPw/Ishan.jpg' },
-    { name: 'Diwakar', role: 'Developer', img: 'https://i.postimg.cc/fyy0vGm4/Diwakar.jpg' },
-    { name: 'Kriti', role: 'Developer', img: 'https://i.postimg.cc/fyqYnzZ6/kriti.jpg' },
-    { name: 'Rahul', role: 'Developer', img: 'https://i.postimg.cc/SNwzWtsy/rahul.jpg' },
-    { name: 'Falak', role: 'Developer', img: 'https://i.postimg.cc/m2xH95hW/falak.jpg' },
-    { name: 'Aparna', role: 'Tech Lead', img: 'https://i.postimg.cc/MpSVCF8X/aparna.jpg' },
-  ],
-  'event-mgmt': [
-    { name: 'Madhur', role: 'Event Manager', img: 'https://i.postimg.cc/hGRTq3W3/madhur.jpg' },
-    { name: 'Parth', role: 'Event Manager', img: 'https://i.postimg.cc/dt7yZKJC/parth.jpg' },
-    { name: 'Sumit Kumar', role: 'Event Member', img: 'https://i.postimg.cc/6pTWjhXQ/sumit-kumar.png' },
-    { name: 'Kanishka Bhardwaj', role: 'Event Member', img: 'https://i.postimg.cc/1XyzYbGq/kanishka.jpg' },
-    { name: 'Ashwani Jha', role: 'Event Member', img: 'https://i.postimg.cc/NFb0hbDJ/ashwini.jpg' },
-  ],
-  'social-media': [
-    { name: 'Apoorva', role: 'Content Creator', img: 'https://i.postimg.cc/PxzBMchy/apoorva.jpg' },
-    { name: 'Kshitij', role: 'Content Creator', img: 'https://i.postimg.cc/BQy2mnhG/kshtiij.jpg' },
-    { name: 'Naman', role: 'Content Creator', img: 'https://i.postimg.cc/ryZ4ppXB/naman.jpg' },
-    { name: 'Pranjal', role: 'Content Creator', img: 'https://i.postimg.cc/nzyCvXFY/pranjal.jpg' },
-  ],
-  'public-relations': [
-    { name: 'Sharad', role: 'PR Lead', img: 'https://i.postimg.cc/pXJ1SBBd/Whats-App-Image-2026-09-15-at-12-49-31.jpg' },
-    { name: 'Bharti', role: 'PR Member', img: 'https://i.postimg.cc/gkf9S5Jw/bharti.jpg' },
-    { name: 'Sumit', role: 'PR Member', img: 'https://i.postimg.cc/9XLCpJZ5/sumit.jpg' },
-    { name: 'Vansh', role: 'PR Member', img: 'https://i.postimg.cc/WpYcrtc2/vansh.jpg' },
-  ],
-};
-
-const MemberCard = ({ member }) => {
-  const initials = member.name
-    .split(' ')
-    .filter(Boolean)
-    .slice(0, 2)
-    .map((n) => n[0]?.toUpperCase() || '')
-    .join('');
-
-  return (
-    <div
-      className="group relative w-full aspect-[3/4] bg-[#0a0a0a] rounded-2xl overflow-hidden border border-white/5 hover:border-[#f97316]/50 transition-[border-color,box-shadow] duration-500 shadow-xl hover:shadow-[0_0_30px_rgba(249,115,22,0.2)]"
-    >
-      {member.img ? (
-        <img
-          src={member.img}
-          alt={member.name}
-          loading="lazy"
-          decoding="async"
-          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-        />
-      ) : (
-        <div className="w-full h-full flex items-center justify-center bg-[#0a0a0a]">
-          <span className="text-4xl font-display font-bold text-white/10 tracking-widest select-none">
-            {initials}
-          </span>
-        </div>
-      )}
-      {member.img && (
-        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent opacity-90 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none z-0"></div>
-      )}
-      <div className="absolute bottom-0 left-0 w-full p-3 sm:p-6 flex flex-col justify-end pointer-events-none z-10">
-        <p className="text-sm md:text-base font-medium text-white/90 text-center truncate">
-          {member.name}
-        </p>
-      </div>
-    </div>
-  );
-};
+const OFFICE = TEAM.filter(isOfficeBearer);
+const OFFICE_ROLES = [...new Set(OFFICE.map((m) => m.role))].join(' · ').toLowerCase();
+const TABS = [{ key: 'all', label: 'all' }, ...TEAM_DEPARTMENTS];
 
 export const TeamPage = () => {
-  const [searchParams] = useSearchParams();
-  const activeDept = searchParams.get('dept') || 'tech-dev';
+  const root = useRef(null);
+  const [params] = useSearchParams();
+  const dept = TEAM_DEPARTMENTS.some((d) => d.key === params.get('dept')) ? params.get('dept') : 'all';
+  const members = dept === 'all' ? TEAM : TEAM.filter((m) => m.dept === dept);
+  useReveal(root);
+
+  // Deal the cards in: on first load, and again whenever the tab changes.
+  useGSAP(
+    () => {
+      if (prefersReducedMotion()) return;
+      gsap.from('.office .card-wrap', { y: 50, rotation: (i) => (i % 2 ? 6 : -6), opacity: 0, duration: 0.7, ease: 'back.out(1.4)', stagger: 0.1, delay: 0.2, clearProps: 'transform' });
+    },
+    { scope: root }
+  );
+
+  useGSAP(
+    () => {
+      if (prefersReducedMotion()) return;
+      gsap.from('.deck .card-wrap', { y: 40, rotation: (i) => (i % 2 ? 5 : -5), opacity: 0, duration: 0.55, ease: 'back.out(1.5)', stagger: 0.05, clearProps: 'transform' });
+    },
+    { scope: root, revertOnUpdate: true, dependencies: [dept] }
+  );
 
   return (
-    <div className="min-h-screen bg-black text-white">
-      <div className="container mx-auto px-5 sm:px-6 pt-28 sm:pt-32 pb-16 sm:pb-24">
-        <div className="text-center mb-10 sm:mb-16">
-          <span className="font-mono text-muted text-xs tracking-widest uppercase mb-2 block">
-            {'// OUR PEOPLE'}
-          </span>
-          <h1 className="text-3xl min-[400px]:text-4xl sm:text-5xl md:text-6xl font-display font-extrabold text-white uppercase tracking-tight px-2 [text-wrap:balance]">
-            Meet Our Team
-          </h1>
-          <p className="mt-4 text-gray-400 text-sm sm:text-base max-w-2xl mx-auto px-2">
-            The minds behind AIVolution. Organized by department, united by vision.
-          </p>
+    <main ref={root} className="nb min-h-screen bg-paper dotgrid">
+      <div className="relative z-[2] max-w-7xl mx-auto px-5 sm:px-8 md:px-12 pt-28 md:pt-36 pb-24">
+        <div className="reveal flex flex-wrap items-end justify-between gap-6">
+          <div>
+            <SectionLabel path="team/" />
+            <h2 className="mt-4 text-[clamp(2.8rem,7vw,7rem)]">the core team.</h2>
+            <Hand className="block mt-3 text-2xl text-pencil" rotate={-1.5}>{TEAM.length} members · {TEAM_DEPARTMENTS.length} departments · collect them all</Hand>
+          </div>
+          <PostIt rotate={3} className="text-lg">hover a card —<br />they tilt.</PostIt>
         </div>
 
-        <div className="flex flex-wrap justify-center gap-2.5 sm:gap-4 mb-10 sm:mb-16 px-1">
-          {departments.map((dept) => (
-            <Link
-              key={dept.key}
-              to={`/team?dept=${dept.key}`}
-              className={`px-4 sm:px-6 py-2.5 sm:py-3 rounded-full border text-xs sm:text-sm font-medium tracking-wide transition-all duration-300 text-center ${
-                activeDept === dept.key
-                  ? 'bg-[#f97316] border-[#f97316] text-black'
-                  : 'border-white/10 text-white hover:border-[#f97316]/50 hover:text-[#f97316]'
-              }`}
-            >
-              {dept.label}
-            </Link>
-          ))}
-        </div>
+        {/* office bearers */}
+        <section className="office mt-12">
+          <div className="reveal flex flex-wrap items-center gap-3" style={{ '--reveal-i': 1 }}>
+            <Tape rotate={-2} stripe>{OFFICE_ROLES}</Tape>
+            <p className="font-mono text-xs text-pencil">{OFFICE.length} · foil edition</p>
+          </div>
+          <div className="mt-6 grid grid-cols-2 lg:grid-cols-4 gap-5 md:gap-8">
+            {OFFICE.map((m) => <MemberCard key={m.name} m={m} big />)}
+          </div>
+        </section>
 
-        <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-6 md:gap-8">
-          {teamMembers[activeDept]?.map((member, idx) => (
-            <MemberCard key={idx} member={member} />
-          ))}
+        {/* departments */}
+        <section className="mt-16">
+          <div className="reveal flex flex-wrap items-center gap-3" style={{ '--reveal-i': 2 }}>
+            <Tape rotate={-2}>departments/</Tape>
+            <nav className="flex gap-2 overflow-x-auto pb-1" aria-label="Filter by department">
+              {TABS.map((t) => {
+                const active = dept === t.key;
+                const tone = DEPT_TONE[t.key] || 'var(--highlight)';
+                return (
+                  <Link
+                    key={t.key}
+                    to={t.key === 'all' ? '/team' : `/team?dept=${t.key}`}
+                    className={`shrink-0 px-3.5 py-1.5 border-2 border-ink font-mono text-xs font-bold transition-transform duration-150 hover:-translate-y-0.5 ${active ? 'text-ink shadow-[3px_3px_0_var(--ink)]' : 'bg-cream text-pencil'}`}
+                    style={active ? { background: tone } : undefined}
+                    aria-current={active ? 'page' : undefined}
+                  >
+                    {t.label}{t.key !== 'all' && <span className="opacity-60"> · {TEAM.filter((m) => m.dept === t.key).length}</span>}
+                  </Link>
+                );
+              })}
+            </nav>
+          </div>
+          <div key={dept} className="deck mt-6 grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-5 md:gap-8">
+            {members.map((m) => <MemberCard key={`${m.dept}-${m.name}`} m={m} />)}
+          </div>
+        </section>
+
+        <div className="mt-20 flex flex-wrap items-center gap-5">
+          <StickerButton href={WHATSAPP} target="_blank" rel="noreferrer" bg="var(--highlight)" rotate={-1.5}>want a card? connect →</StickerButton>
+          <Link to="/#contributors" className="squiggle font-bricolage font-extrabold text-lg">faculty on the homepage →</Link>
         </div>
       </div>
-    </div>
+      <Perforation color="var(--cream)" />
+    </main>
   );
 };

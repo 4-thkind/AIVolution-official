@@ -1,9 +1,42 @@
 export const EVENTS = [
   {
-    type: "competition",
+    type: "workshop",
     featured: true,
-    registrationOpen: false,
-    registrationKind: "team",
+    title: "From Prompt to Production",
+    date: "14 Oct 2026",
+    summary:
+      "Expert talk & hands-on workshop with Mr. Akshay Nara (EXL) on how real AI systems are built — LLMs → RAG → Agents.",
+    facts: ["Expert Talk", "Hands-On Workshop", "LLMs · RAG · Agents", "Google AI Studio"],
+    sections: [
+      {
+        heading: "The Event",
+        body: "AIvolutions, the technical society of the Department of CSE (AIML), Maharaja Agrasen Institute of Technology, Delhi, conducted an Expert Talk & Hands-on Workshop, \"From Prompt to Production: How Real AI Systems Are Built (LLMs → RAG → Agents)\", on 14th October 2026 at the 11th Block, 4th Floor, MAIT.",
+      },
+      {
+        heading: "Guest Speaker",
+        body: "Mr. Akshay Nara, Senior Agentic AI Leader at EXL, took students beyond the buzzwords and into how AI systems are actually designed, controlled and deployed in the industry.",
+      },
+      {
+        heading: "What We Explored",
+        body: "The AI landscape; intent vs entity; LLMs and hallucinations; Retrieval-Augmented Generation (RAG); prompting and guardrails; Agentic AI with a hands-on session using Google AI Studio; and tokens, cost and deployment.",
+      },
+      {
+        heading: "Key Takeaways",
+        body: "AI can generate code, but you must understand the logic behind it. Strong fundamentals like DSA continue to matter for top tech companies. A good AI voice assistant is precise and short. Hallucination is a real production risk, and RAG and guardrails are how real systems tackle it. Getting intent and entity right is the foundation of good conversational AI.",
+      },
+    ],
+    imgUrl: "/assets/events/prompt-to-production/poster.jpg",
+    id: "WRK_P2P",
+    gallery: [
+      "/assets/events/prompt-to-production/felicitation.jpg",
+      "/assets/events/prompt-to-production/session.jpg",
+      "/assets/events/prompt-to-production/core_team.jpg",
+      "/assets/events/prompt-to-production/address.jpg",
+      "/assets/events/prompt-to-production/poster.jpg",
+    ],
+  },
+  {
+    type: "competition",
     title: "Codex Hackathon 2025",
     date: "18–19 Sep 2025",
     summary:
@@ -36,8 +69,6 @@ export const EVENTS = [
   },
   {
     type: "competition",
-    registrationOpen: false,
-    registrationKind: "team",
     title: "The Coding Triathlon",
     date: "23–25 Mar 2025",
     summary:
@@ -63,6 +94,7 @@ export const EVENTS = [
       "/assets/events/coding-triathlon/day1_guests.webp",
       "/assets/events/coding-triathlon/day1_group.webp",
       "/assets/events/coding-triathlon/day1_interactive.webp",
+      "/assets/events/coding-triathlon/day1_lab_group.jpg",
       "/assets/events/coding-triathlon/day2_session.webp",
       "/assets/events/coding-triathlon/day2_lab.webp",
       "/assets/events/coding-triathlon/day3_finale.webp",
@@ -73,8 +105,6 @@ export const EVENTS = [
   },
   {
     type: "gallery",
-    registrationOpen: false,
-    registrationKind: "team",
     title: "Algosphere",
     date: "22 Mar – Apr 2025",
     summary:
@@ -104,8 +134,6 @@ export const EVENTS = [
   },
   {
     type: "workshop",
-    registrationOpen: false,
-    registrationKind: "solo",
     title: "Metaverse — Game Development",
     date: "25 Nov 2024",
     summary:
@@ -135,8 +163,6 @@ export const EVENTS = [
   },
   {
     type: "webinar",
-    registrationOpen: false,
-    registrationKind: "solo",
     title: "Enterprise Application Suite",
     date: "20 Feb 2025",
     summary:
@@ -166,8 +192,6 @@ export const EVENTS = [
   },
   {
     type: "visit",
-    registrationOpen: false,
-    registrationKind: "solo",
     title: "Industrial Visit — DUCAT Pitampura",
     date: "18 Oct 2024",
     summary:
@@ -197,8 +221,6 @@ export const EVENTS = [
   },
   {
     type: "webinar",
-    registrationOpen: false,
-    registrationKind: "solo",
     title: "Orientation 2024",
     date: "29 Sep 2024",
     summary:
@@ -223,10 +245,10 @@ export const EVENTS = [
   },
   {
     type: "webinar",
-    registrationOpen: false,
-    registrationKind: "solo",
     title: "Preparation Mantra",
     date: "27 May 2025",
+    // Listed after Algosphere (it was a short exam-prep webinar); `date` is still what's shown.
+    sortAs: "21 Mar 2025",
     summary:
       "Jinal Gupta's exam-season webinar on smart prep, time management, and scoring technique.",
     facts: ["Exam Prep Webinar", "Time Management", "Live Q&A"],

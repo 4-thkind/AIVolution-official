@@ -11,11 +11,25 @@ module.exports = {
         surface: "#18181b", // Elevated Dark
         muted: "#A1A1AA", // Zinc
         gridline: "#27272a", // Subtle dark grey for grid
+        // "Lab notebook" palette (homepage)
+        paper: "#f3eee2",
+        cream: "#faf6ea",
+        ink: "#141414",
+        pencil: "#6b6860",
+        marker: "#ff5a1f",
+        highlight: "#ffe85c",
+        pen: "#2f6bff",
+        redpen: "#e5342b",
+        mint: "#3ae88a",
+        pink: "#ff8fb1",
+        screen: "#0c0f0e",
       },
       fontFamily: {
         sans: ['Inter', 'sans-serif'],
         mono: ['JetBrains Mono', 'monospace'],
         display: ['Syne', 'sans-serif'],
+        bricolage: ['"Bricolage Grotesque"', 'Syne', 'sans-serif'],
+        hand: ['Caveat', 'cursive'],
       },
        backgroundImage: {
         'banner-gradient': 'linear-gradient(to right, rgba(9,9,11,0.9), rgba(9,9,11,0.3))',

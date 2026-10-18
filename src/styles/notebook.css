@@ -1,0 +1,456 @@
+/* ------------------------------------------------------------------
+   "The Lab Notebook" — homepage design system.
+   Paper, ink, highlighter, tape, stamps. Everything here is CSS-only;
+   GSAP handles scroll/drag in the components. Imported by pages/Home.js.
+   ------------------------------------------------------------------ */
+
+:root {
+  --paper: #f3eee2;
+  --cream: #faf6ea;
+  --ink: #141414;
+  --pencil: #6b6860;
+  --marker: #ff5a1f;
+  --highlight: #ffe85c;
+  --pen: #2f6bff;
+  --redpen: #e5342b;
+  --mint: #3ae88a;
+  --pink: #ff8fb1;
+  --screen: #0c0f0e;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --font-display: "Bricolage Grotesque", "Syne", sans-serif;
+  --font-hand: "Caveat", cursive;
+  --font-mono: "JetBrains Mono", monospace;
+}
+
+.nb {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: Inter, sans-serif;
+  overflow-x: clip;
+}
+.nb ::selection { background: var(--highlight); color: var(--ink); }
+.nb h1, .nb h2, .nb h3 {
+  font-family: var(--font-display);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 0.92;
+}
+.nb a:focus-visible, .nb button:focus-visible {
+  outline: 3px solid var(--pen);
+  outline-offset: 3px;
+}
+
+/* ---------- surfaces ---------- */
+:where(.grain) { position: relative; }
+.grain::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.05;
+  mix-blend-mode: multiply;
+  background-size: 220px 220px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+.grain--light::before { opacity: 0.1; mix-blend-mode: screen; }
+
+.paper-ruled {
+  --margin: 56px;
+  background-color: var(--cream);
+  background-image:
+    linear-gradient(90deg, transparent calc(var(--margin) - 2px), rgba(229, 52, 43, 0.35) calc(var(--margin) - 2px), rgba(229, 52, 43, 0.35) var(--margin), transparent var(--margin)),
+    repeating-linear-gradient(0deg, transparent 0 31px, rgba(47, 107, 255, 0.16) 31px 32px);
+}
+.dotgrid {
+  background-image: radial-gradient(rgba(20, 20, 20, 0.2) 1px, transparent 1.3px);
+  background-size: 22px 22px;
+}
+/* Blue-ink grid revealed by a pointer "flashlight" — set --mx/--my on the parent */
+.inkgrid {
+  background-image:
+    linear-gradient(rgba(47, 107, 255, 0.3) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(47, 107, 255, 0.3) 1px, transparent 1px);
+  background-size: 22px 22px;
+  -webkit-mask-image: radial-gradient(circle 140px at var(--mx, -999px) var(--my, -999px), #000 0%, #000 70%, transparent 100%);
+  mask-image: radial-gradient(circle 140px at var(--mx, -999px) var(--my, -999px), #000 0%, #000 70%, transparent 100%);
+}
+.blueprint {
+  background-color: #1b3a7a;
+  color: #eaf0ff;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.12) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.12) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+.cork {
+  background-color: #c89a63;
+  background-image:
+    radial-gradient(rgba(0, 0, 0, 0.14) 1px, transparent 1.4px),
+    radial-gradient(rgba(255, 255, 255, 0.14) 1px, transparent 1.4px);
+  background-size: 7px 7px, 11px 11px;
+  background-position: 0 0, 3px 5px;
+}
+:where(.screen) { position: relative; }
+.screen {
+  background: var(--screen);
+  color: #d7f5e3;
+}
+.screen::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  background: repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.035) 0 1px, transparent 1px 3px);
+}
+
+/* ---------- scraps ---------- */
+.nb-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--pencil);
+}
+.nb-label > span:first-child {
+  color: var(--pen);
+  font-weight: 700;
+}
+
+/* Jupyter cell: thin left bracket that turns blue when the cell is "active" (in view) */
+:where(.cell) { position: relative; }
+.cell::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: transparent;
+  transition: background 0.4s var(--ease-out);
+}
+.cell.is-visible::before, .cell.is-active::before { background: var(--pen); }
+
+/* Tear-off perforation: punched holes along a dashed line */
+.perforation {
+  height: 16px;
+  background-image:
+    radial-gradient(circle at center, var(--hole, #e2dccb) 4.5px, transparent 5.5px),
+    linear-gradient(90deg, rgba(20, 20, 20, 0.22) 50%, transparent 50%);
+  background-size: 36px 16px, 12px 2px;
+  background-position: 0 0, 0 7px;
+  background-repeat: repeat-x;
+}
+
+.tape {
+  display: inline-block;
+  padding: 0.4rem 1.3rem;
+  background: rgba(255, 232, 92, 0.78);
+  color: var(--ink);
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  clip-path: polygon(0 8%, 2% 0, 98% 5%, 100% 0, 99% 90%, 97% 100%, 3% 95%, 0 100%);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+  transform: rotate(var(--r, -2deg));
+}
+.tape--stripe {
+  background-image: repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.4) 0 6px, transparent 6px 12px);
+}
+.tape--blue { background-color: rgba(155, 215, 255, 0.8); }
+.tape--pink { background-color: rgba(255, 143, 177, 0.8); }
+
+.postit {
+  display: inline-block;
+  padding: 0.9rem 1.1rem 1.1rem;
+  background: var(--highlight);
+  color: var(--ink);
+  font-family: var(--font-hand);
+  font-size: 1.4rem;
+  line-height: 1.1;
+  box-shadow: 2px 5px 12px rgba(0, 0, 0, 0.14);
+  transform: rotate(var(--r, -2deg));
+}
+.postit--pink { background: var(--pink); }
+.postit--blue { background: #9bd7ff; }
+.postit--mint { background: var(--mint); }
+
+.polaroid {
+  display: block;
+  background: #fff;
+  padding: 0.6rem 0.6rem 2.2rem;
+  box-shadow: 0 14px 28px -14px rgba(0, 0, 0, 0.45), 0 2px 4px rgba(0, 0, 0, 0.1);
+  transform: rotate(var(--r, 0deg));
+  color: var(--ink);
+}
+.polaroid img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  filter: saturate(0.92) contrast(1.04);
+  background: #e8e3d8;
+}
+.polaroid__caption {
+  font-family: var(--font-hand);
+  font-size: 1.3rem;
+  line-height: 1;
+  margin-top: 0.7rem;
+}
+
+.stamp {
+  display: inline-block;
+  padding: 0.35rem 0.85rem;
+  border: 3px double var(--stamp, var(--redpen));
+  border-radius: 6px;
+  color: var(--stamp, var(--redpen));
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 0.8rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  transform: rotate(var(--r, -8deg));
+  mix-blend-mode: multiply;
+  opacity: 0.88;
+}
+
+.diecut {
+  filter: drop-shadow(2px 0 0 #fff) drop-shadow(-2px 0 0 #fff) drop-shadow(0 2px 0 #fff) drop-shadow(0 -2px 0 #fff) drop-shadow(0 8px 12px rgba(0, 0, 0, 0.2));
+}
+.sticker {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.45rem 0.95rem;
+  border-radius: 999px;
+  background: var(--bg, #fff);
+  color: var(--fg, var(--ink));
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 1rem;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  user-select: none;
+  cursor: grab;
+}
+.sticker:active { cursor: grabbing; }
+
+/* highlighter that "swipes" in once .is-on is added */
+.mark {
+  --mark: var(--highlight);
+  background-image: linear-gradient(104deg, transparent 0.5%, var(--mark) 2.4%, var(--mark) 96.5%, transparent 98%);
+  background-repeat: no-repeat;
+  background-size: 0% 100%;
+  padding: 0 0.12em;
+  margin: 0 -0.08em;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+  transition: background-size 0.8s var(--ease-out);
+}
+.mark.is-on, .is-visible .mark { background-size: 100% 100%; }
+
+.squiggle {
+  text-decoration: underline wavy var(--marker);
+  text-decoration-thickness: 3px;
+  text-underline-offset: 0.18em;
+}
+.strike {
+  position: relative;
+  display: inline-block;
+}
+.strike::after {
+  content: "";
+  position: absolute;
+  left: -4%;
+  right: -4%;
+  top: 52%;
+  height: 0.09em;
+  background: var(--redpen);
+  transform: rotate(-3deg) scaleX(var(--sx, 0));
+  transform-origin: left center;
+  transition: transform 0.5s var(--ease-out) 0.6s;
+}
+.strike.is-on::after, .is-visible .strike::after { --sx: 1; }
+
+.btn-sticker {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.9rem 1.5rem;
+  border: 2.5px solid var(--ink);
+  border-radius: 14px;
+  background: var(--bg, #fff);
+  color: var(--fg, var(--ink));
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 1.05rem;
+  letter-spacing: -0.01em;
+  box-shadow: 4px 4px 0 var(--ink);
+  transform: rotate(var(--r, 0deg));
+  transition: transform 0.18s var(--ease-out), box-shadow 0.18s var(--ease-out);
+  text-decoration: none;
+}
+.btn-sticker:hover {
+  transform: translate(-2px, -2px) rotate(var(--r, 0deg));
+  box-shadow: 7px 7px 0 var(--ink);
+}
+.btn-sticker:active {
+  transform: translate(3px, 3px) rotate(var(--r, 0deg));
+  box-shadow: 1px 1px 0 var(--ink);
+}
+
+/* ---------- code editor window (README) ---------- */
+.editor { font-variant-ligatures: none; }
+.editor .ln { transition: background 0.2s; }
+.editor .ln.is-cur { background: rgba(255, 255, 255, 0.045); }
+.editor .ln.is-cur .ln-n { color: var(--mint); }
+.editor .tok {
+  color: var(--c);
+  background: color-mix(in srgb, var(--c) 13%, transparent);
+  box-shadow: inset 0 -2px 0 var(--c);
+  padding: 0 0.08em;
+  border-radius: 2px;
+}
+.editor .w.is-cur::after {
+  content: "";
+  display: inline-block;
+  width: 0.5ch;
+  height: 0.95em;
+  margin-left: 3px;
+  vertical-align: -0.1em;
+  background: var(--mint);
+  animation: nb-blink 1s steps(1) infinite;
+}
+
+/* ---------- film strip (faculty) ---------- */
+.sprockets {
+  background-image: radial-gradient(rgba(255, 255, 255, 0.85) 0 4px, transparent 5px);
+  background-size: 28px 16px;
+  background-position: 6px center;
+  background-repeat: repeat-x;
+  opacity: 0.9;
+}
+.frame { transition: transform 0.35s var(--ease-out); will-change: transform; }
+.frame:hover { transform: translateY(-8px) rotate(-1deg); z-index: 2; }
+.frame:hover .frame-tag { opacity: 1; transform: translateY(0); }
+.film-track { will-change: transform; }
+
+/* ---------- motion helpers ---------- */
+.mask-line { display: block; overflow: hidden; padding-bottom: 0.08em; }
+.mask-line > span { display: block; will-change: transform; }
+
+.reveal--pop { transform: scale(0.7) translate3d(0, 16px, 0); }
+.reveal--pop.is-visible { transform: none; }
+
+.nb-marquee { display: flex; width: max-content; gap: 2.5rem; padding-right: 2.5rem; }
+
+@keyframes nb-float {
+  0%, 100% { transform: translateY(0) rotate(var(--r, 0deg)); }
+  50% { transform: translateY(-8px) rotate(calc(var(--r, 0deg) + 1.5deg)); }
+}
+.float { animation: nb-float 5s ease-in-out infinite; }
+
+@keyframes nb-blink { 50% { opacity: 0; } }
+.caret::after { content: "▌"; animation: nb-blink 1s steps(1) infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  .nb *, .nb *::before, .nb *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+  .mark { background-size: 100% 100%; }
+  .strike::after { --sx: 1; }
+  .mask-line > span { transform: none !important; opacity: 1 !important; }
+}
+
+/* faculty frame: name gets the highlighter on hover */
+.frame .mark { background-size: 0% 100%; }
+.frame:hover .mark { background-size: 100% 100%; }
+
+/* join steps: title highlighter swipes on hover */
+.step .mark { background-size: 0% 100%; }
+.step:hover .mark { background-size: 100% 100%; }
+
+/* ---------- /events: ticket stubs ---------- */
+.ticket .ticket-stub {
+  -webkit-mask: radial-gradient(circle 9px at 100% 0, transparent 98%, #000) top right / 100% 50% no-repeat,
+                radial-gradient(circle 9px at 100% 100%, transparent 98%, #000) bottom right / 100% 50% no-repeat;
+  mask: radial-gradient(circle 9px at 100% 0, transparent 98%, #000) top right / 100% 50% no-repeat,
+        radial-gradient(circle 9px at 100% 100%, transparent 98%, #000) bottom right / 100% 50% no-repeat;
+}
+.ticket[aria-pressed="true"] .ticket-stub { background: var(--tone); color: var(--ink); }
+.ticket:not([aria-pressed="true"]):hover .ticket-stub { background: color-mix(in srgb, var(--tone) 35%, transparent); }
+
+/* ---------- /team: trading cards ---------- */
+.tcard { will-change: transform; transform-style: preserve-3d; }
+.tcard-face { backface-visibility: hidden; -webkit-backface-visibility: hidden; }
+.tcard-back { transform: rotateY(180deg); }
+.tcard-img { will-change: transform; }
+/* hover: a clean white light-streak sweeps across the photo once; no colour cast */
+.tcard .holo {
+  background: linear-gradient(105deg, transparent 38%, rgba(255, 255, 255, 0.42) 48%, rgba(255, 255, 255, 0.12) 54%, transparent 62%);
+  transform: translateX(-120%);
+  opacity: 0;
+}
+.tcard:hover .holo, .tcard:focus-visible .holo { animation: nb-sweep 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) forwards; }
+@keyframes nb-sweep {
+  0% { transform: translateX(-120%); opacity: 1; }
+  100% { transform: translateX(120%); opacity: 0; }
+}
+/* subtle edge light in the department colour + a lift */
+.tcard .glare {
+  box-shadow: inset 0 0 0 0 var(--tone);
+  transition: box-shadow 0.35s;
+}
+.tcard:hover .glare, .tcard:focus-visible .glare { box-shadow: inset 0 0 0 3px var(--tone), inset 0 0 40px rgba(255, 255, 255, 0.12); }
+.tcard .tcard-face { transition: box-shadow 0.25s; }
+.tcard:hover .tcard-face { box-shadow: 10px 10px 0 var(--ink), 0 0 0 6px color-mix(in srgb, var(--tone) 55%, transparent); }
+
+/* frosted-glass nameplate over the photo */
+.tcard .nameplate {
+  background: rgba(250, 246, 234, 0.62);
+  backdrop-filter: blur(10px) saturate(1.2);
+  -webkit-backdrop-filter: blur(10px) saturate(1.2);
+}
+/* office bearers: animated foil border on both faces */
+@property --foil { syntax: "<angle>"; inherits: false; initial-value: 0deg; }
+@keyframes nb-foil { to { --foil: 360deg; } }
+.tcard--foil .tcard-face {
+  border-color: transparent;
+  background-image:
+    linear-gradient(var(--cream), var(--cream)),
+    conic-gradient(from var(--foil), #ff5a1f, #ffe85c, #3ae88a, #9bd7ff, #ff8fb1, #ff5a1f);
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+  animation: nb-foil 6s linear infinite;
+}
+.tcard--foil .tcard-back {
+  background-image:
+    linear-gradient(var(--tone), var(--tone)),
+    conic-gradient(from var(--foil), #ff5a1f, #ffe85c, #3ae88a, #9bd7ff, #ff8fb1, #ff5a1f);
+}
+
+/* pushpin for boards and flyers */
+.pushpin {
+  width: 16px; height: 16px; border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #ff8f80, var(--redpen) 60%, #8f1d14);
+  box-shadow: 0 3px 4px rgba(0, 0, 0, 0.35), inset 0 -2px 2px rgba(0, 0, 0, 0.25);
+  z-index: 3;
+}
+
+/* ---------- performance: the sliding report ---------- */
+.polaroid img { filter: none; }                       /* CSS filters on big images re-rasterise on every transform */
+.rep-cards { will-change: transform; }
+.rep-card { will-change: transform; transform: translateZ(0); backface-visibility: hidden; }
+.rep-card .stamp { mix-blend-mode: normal; opacity: 1; }   /* no blend modes inside a moving layer */
+.rep-hero-img { will-change: transform, clip-path; }
+.wall .print { will-change: transform; }
+
+/* film strip slider */
+.film-slider { -webkit-appearance: none; appearance: none; height: 10px; background: var(--cream); border: 2px solid var(--ink); border-radius: 999px; cursor: pointer; }
+.film-slider::-webkit-slider-thumb { -webkit-appearance: none; width: 22px; height: 22px; border-radius: 50%; background: var(--marker); border: 2px solid var(--ink); box-shadow: 2px 2px 0 var(--ink); cursor: grab; }
+.film-slider::-moz-range-thumb { width: 22px; height: 22px; border-radius: 50%; background: var(--marker); border: 2px solid var(--ink); box-shadow: 2px 2px 0 var(--ink); cursor: grab; }
+.film-slider:active::-webkit-slider-thumb { cursor: grabbing; }

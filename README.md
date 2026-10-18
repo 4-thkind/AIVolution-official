@@ -6,9 +6,8 @@ Official website for **AIVolution** — an AI/DS-focused student organization si
 
 - Public homepage with cinematic hero, stats, projects, skills, vision, events, sponsors, faculty advisors, and team sections.
 - Interactive navigation and animated section transitions using GSAP/ScrollTrigger.
-- Contact form backed by Supabase.
 - Newsletter/email capture via Mailchimp.
-- Event registration modal and event highlights.
+- Event reports with photo galleries, and a team page.
 - Separate Team page routed with React Router.
 - Production build deployed on Vercel.
 
@@ -19,7 +18,6 @@ Official website for **AIVolution** — an AI/DS-focused student organization si
 - Tailwind CSS
 - GSAP + `@gsap/react`
 - `react-multi-carousel`
-- Supabase JS client
 - Mailchimp subscribe
 - React Bootstrap + Bootstrap icons
 - Vercel for deployment
@@ -34,7 +32,7 @@ npm test
 
 ## Environment
 
-Create `.env.local` with the required Supabase/Mailchimp keys.
+Create `.env.local` with the Mailchimp keys if you use the newsletter form.
 
 ## Deployment
 

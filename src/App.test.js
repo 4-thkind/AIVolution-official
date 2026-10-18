@@ -23,21 +23,23 @@ const renderApp = () =>
   );
 
 beforeEach(() => {
+  // Skip the one-time boot screen.
   window.sessionStorage.setItem('aiv:booted', '1');
 });
 
-test('renders the navigation and the mobile homepage', async () => {
+test('renders the navigation and the homepage on a phone', async () => {
   mockViewport(true);
   renderApp();
   expect(screen.getByRole('button', { name: /open menu/i })).toBeInTheDocument();
-  expect(await screen.findByText(/of Intelligence\./i)).toBeInTheDocument();
-  expect(screen.getByRole('link', { name: /explore events/i })).toBeInTheDocument();
-  expect(screen.getByRole('heading', { name: /core directives/i })).toBeInTheDocument();
+  expect(await screen.findByText(/we turn AI/i)).toBeInTheDocument();
+  expect(screen.getByRole('link', { name: /see our events/i })).toBeInTheDocument();
+  expect(screen.getAllByText(/README\.md/).length).toBeGreaterThan(0);
 });
 
-test('renders the desktop homepage', async () => {
+test('renders the homepage on desktop', async () => {
   mockViewport(false);
   renderApp();
-  expect(await screen.findByText(/of Intelligence\./i)).toBeInTheDocument();
-  expect(screen.getByText(/scroll down to sequence/i)).toBeInTheDocument();
+  expect(await screen.findByText(/we turn AI/i)).toBeInTheDocument();
+  expect(screen.getByText(/4 departments,/i)).toBeInTheDocument();
+  expect(screen.getByRole('link', { name: /meet the whole team/i })).toBeInTheDocument();
 });

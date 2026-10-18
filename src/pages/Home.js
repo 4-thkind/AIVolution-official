@@ -1,16 +1,26 @@
-import React, { lazy, Suspense } from 'react';
-import { useIsMobile } from '../hooks/useMediaQuery';
+import React from 'react';
+import { Boot } from '../components/home/Boot';
+import { Hero } from '../components/home/Hero';
+import { GitLog } from '../components/home/GitLog';
+import { About } from '../components/home/About';
+import { Departments } from '../components/home/Departments';
+import { Events } from '../components/home/Events';
+import { Contributors } from '../components/home/Contributors';
+import { Sponsors } from '../components/home/Sponsors';
+import { Join } from '../components/home/Join';
+import { FooterArt } from '../components/home/FooterArt';
 
-const HomeDesktop = lazy(() => import(/* webpackChunkName: "home-desktop" */ './HomeDesktop'));
-const HomeMobile = lazy(() => import(/* webpackChunkName: "home-mobile" */ './HomeMobile'));
-
-const Fallback = () => <div className="min-h-screen bg-black" aria-hidden="true" />;
-
-export const Home = () => {
-  const isMobile = useIsMobile();
-  return (
-    <Suspense fallback={<Fallback />}>
-      {isMobile ? <HomeMobile /> : <HomeDesktop />}
-    </Suspense>
-  );
-};
+export const Home = () => (
+  <main className="nb">
+    <Boot />
+    <Hero />
+    <GitLog />
+    <About />
+    <Departments />
+    <Events />
+    <Contributors />
+    <Sponsors />
+    <Join />
+    <FooterArt />
+  </main>
+);
