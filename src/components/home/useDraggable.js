@@ -19,6 +19,10 @@ export const useDraggable = (scopeRef, selector, { bounds, deps = [] } = {}) => 
         zIndexBoost: true,
         onPress() { gsap.to(this.target, { scale: 1.08, duration: 0.2 }); },
         onRelease() { gsap.to(this.target, { scale: 1, duration: 0.35, ease: 'back.out(2)' }); },
+        onClick() {
+          const href = this.target.getAttribute('data-linkedin');
+          if (href) window.open(href, '_blank', 'noopener,noreferrer');
+        },
       });
       return () => instances.forEach((d) => d.kill());
     },

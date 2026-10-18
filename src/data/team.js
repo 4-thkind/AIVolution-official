@@ -1,3 +1,15 @@
+// Direct /in/ only when the profile shows MAIT / Maharaja Agrasen AND Aivolution.
+// Otherwise people-search: name + MAIT + Aivolutions.
+export const maitPeopleSearch = (name) =>
+  `https://www.linkedin.com/search/results/people/?keywords=${encodeURIComponent(`${name} MAIT Aivolutions`)}`;
+
+const member = (name, role, img, linkedin) => ({
+  name,
+  role,
+  img,
+  linkedin: linkedin || maitPeopleSearch(name),
+});
+
 // Full core-team roster, grouped by department. Shared by the homepage and /team.
 export const TEAM_DEPARTMENTS = [
   { key: 'tech-dev', label: 'Tech & Dev', id: 'MOD_01' },
@@ -8,30 +20,30 @@ export const TEAM_DEPARTMENTS = [
 
 export const TEAM_MEMBERS = {
   'tech-dev': [
-    { name: 'Ishan', role: 'Tech Head', img: 'https://i.postimg.cc/VvJdtjPw/Ishan.jpg' },
-    { name: 'Diwakar', role: 'Tech Head', img: 'https://i.postimg.cc/fyy0vGm4/Diwakar.jpg' },
-    { name: 'Kriti', role: 'Developer', img: 'https://i.postimg.cc/fyqYnzZ6/kriti.jpg' },
-    { name: 'Rahul', role: 'President', img: 'https://i.postimg.cc/SNwzWtsy/rahul.jpg' },
-    { name: 'Aparna', role: 'Developer', img: 'https://i.postimg.cc/MpSVCF8X/aparna.jpg' },
-    { name: 'Sumit Bhatt', role: 'Developer', img: 'https://i.postimg.cc/9XLCpJZ5/sumit.jpg' },
+    member('Ishan', 'Tech Head', 'https://i.postimg.cc/VvJdtjPw/Ishan.jpg', 'https://www.linkedin.com/in/ishan-gupta-08686631a'),
+    member('Diwakar', 'Tech Head', 'https://i.postimg.cc/fyy0vGm4/Diwakar.jpg', 'https://www.linkedin.com/in/diwakar-mishra-dev'),
+    member('Kriti', 'Developer', 'https://i.postimg.cc/fyqYnzZ6/kriti.jpg', 'https://www.linkedin.com/in/kritsii/'),
+    member('Rahul', 'President', 'https://i.postimg.cc/SNwzWtsy/rahul.jpg', 'https://www.linkedin.com/in/rahulkumarmait'),
+    member('Aparna', 'Developer', 'https://i.postimg.cc/MpSVCF8X/aparna.jpg', 'https://www.linkedin.com/in/aparna-jha-58662b304/'),
+    member('Sumit Bhatt', 'Developer', 'https://i.postimg.cc/9XLCpJZ5/sumit.jpg', 'https://www.linkedin.com/in/sumit-bhatt-753186218/'),
   ],
   'event-mgmt': [
-    { name: 'Madhur', role: 'Event Member', img: 'https://i.postimg.cc/hGRTq3W3/madhur.jpg' },
-    { name: 'Parth', role: 'Event Head', img: 'https://i.postimg.cc/dt7yZKJC/parth.jpg' },
-    { name: 'Sumit Kumar', role: 'Event Executive', img: 'https://i.postimg.cc/6pTWjhXQ/sumit-kumar.png' },
-    { name: 'Kanishka Bhardwaj', role: 'Event Member', img: 'https://i.postimg.cc/1XyzYbGq/kanishka.jpg' },
-    { name: 'Ashwani Jha', role: 'Event Member', img: 'https://i.postimg.cc/NFb0hbDJ/ashwini.jpg' },
+    member('Madhur', 'Event Member', 'https://i.postimg.cc/hGRTq3W3/madhur.jpg', 'https://www.linkedin.com/in/madhur-chaudhary-ai/'),
+    member('Parth', 'Event Head', 'https://i.postimg.cc/dt7yZKJC/parth.jpg', 'https://www.linkedin.com/in/parth-arora-a9b3b1316'),
+    member('Sumit Kumar', 'Event Executive', 'https://i.postimg.cc/6pTWjhXQ/sumit-kumar.png', 'https://www.linkedin.com/in/sumit-kumar-b81344304/'),
+    member('Kanishka Bhardwaj', 'Event Member', 'https://i.postimg.cc/1XyzYbGq/kanishka.jpg', 'https://www.linkedin.com/in/kanishka-bhardwaj-014310329/'),
+    member('Ashwani Jha', 'Event Member', 'https://i.postimg.cc/NFb0hbDJ/ashwini.jpg', 'https://www.linkedin.com/in/ashwani-jha-a26bbb299'),
   ],
   'social-media': [
-    { name: 'Apoorva', role: 'Vice President', img: 'https://i.postimg.cc/PxzBMchy/apoorva.jpg' },
-    { name: 'Kshitij', role: 'Secretary', img: 'https://i.postimg.cc/BQy2mnhG/kshtiij.jpg' },
-    { name: 'Naman', role: 'Vice President', img: 'https://i.postimg.cc/ryZ4ppXB/naman.jpg' },
+    member('Apoorva', 'Vice President', 'https://i.postimg.cc/PxzBMchy/apoorva.jpg', 'https://www.linkedin.com/in/apoorva-adhikari-66621323b/'),
+    member('Kshitij', 'Secretary', 'https://i.postimg.cc/BQy2mnhG/kshtiij.jpg', 'https://www.linkedin.com/in/kshitij-garg-047221344'),
+    member('Naman', 'Vice President', 'https://i.postimg.cc/ryZ4ppXB/naman.jpg', 'https://www.linkedin.com/in/naman-chopra-250325326'),
   ],
   'public-relations': [
-    { name: 'Sharad', role: 'PR Head', img: 'https://i.postimg.cc/pXJ1SBBd/Whats-App-Image-2026-09-15-at-12-49-31.jpg' },
-    { name: 'Bharti', role: 'PR Executive', img: 'https://i.postimg.cc/gkf9S5Jw/bharti.jpg' },
-    { name: 'Vansh', role: 'PR Member', img: 'https://i.postimg.cc/WpYcrtc2/vansh.jpg' },
-    { name: 'Falak', role: 'PR Member', img: 'https://i.postimg.cc/m2xH95hW/falak.jpg' },
+    member('Sharad', 'PR Head', 'https://i.postimg.cc/pXJ1SBBd/Whats-App-Image-2026-09-15-at-12-49-31.jpg', 'https://www.linkedin.com/in/sharad-tiwari-a04a4b345/'),
+    member('Bharti', 'PR Executive', 'https://i.postimg.cc/gkf9S5Jw/bharti.jpg', 'https://www.linkedin.com/in/bharti-bhatti-751933327'),
+    member('Vansh', 'PR Member', 'https://i.postimg.cc/WpYcrtc2/vansh.jpg', 'https://www.linkedin.com/in/vanshbahl'),
+    member('Falak', 'PR Member', 'https://i.postimg.cc/m2xH95hW/falak.jpg', 'https://www.linkedin.com/in/falakkhatreja'),
   ],
 };
 
