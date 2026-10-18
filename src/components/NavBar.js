@@ -78,9 +78,11 @@ export const NavBar = ({ variant = "dark" }) => {
     else setActiveLink('home');
   }, [location]);
 
-  const onUpdateActiveLink = (value) => {
+  const onUpdateActiveLink = (value, to) => {
     setActiveLink(value);
     setIsOpen(false);
+    // Already on that page → go to its top instead of staying put.
+    if (to && to.replace('/#home', '/') === location.pathname) window.scrollTo({ top: 0, behavior: 'instant' });
   };
 
   // While the mobile menu is open: keep the navbar visible (don't auto-hide
@@ -137,7 +139,7 @@ export const NavBar = ({ variant = "dark" }) => {
 
         <div className="hidden lg:flex items-center space-x-12 absolute left-1/2 -translate-x-1/2">
           {links.map(([key, to, label]) => (
-            <NavLink key={key} t={t} to={to} active={activeLink === key} onClick={() => onUpdateActiveLink(key)}>{label}</NavLink>
+            <NavLink key={key} t={t} to={to} active={activeLink === key} onClick={() => onUpdateActiveLink(key, to)}>{label}</NavLink>
           ))}
         </div>
 
@@ -169,7 +171,7 @@ export const NavBar = ({ variant = "dark" }) => {
       >
         <div className="flex flex-col items-stretch gap-1 px-3 py-4">
             {links.map(([key, to, label]) => (
-              <NavLink key={key} mobile t={t} to={to} active={activeLink === key} onClick={() => onUpdateActiveLink(key)}>{label}</NavLink>
+              <NavLink key={key} mobile t={t} to={to} active={activeLink === key} onClick={() => onUpdateActiveLink(key, to)}>{label}</NavLink>
             ))}
 
             <div className={`w-12 h-px ${t.divider} my-3 mx-auto`}></div>

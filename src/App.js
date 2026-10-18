@@ -5,6 +5,7 @@ import MouseFollower from './components/MouseFollower';
 import { Routes, Route, useLocation } from "react-router-dom";
 import { Home } from "./pages/Home";
 import "./styles/notebook.css";
+import { ScrollTrigger } from "./lib/gsap";
 
 const Events = lazy(() =>
   import(/* webpackPrefetch: true */ "./pages/EventsPage").then((m) => ({ default: m.EventsPage }))
@@ -50,11 +51,14 @@ function App() {
 const ScrollToTop = () => {
   const { pathname } = useLocation();
   useEffect(() => {
-    // Temporarily disable smooth scroll during route transitions
+    // New route → start at the top. ScrollTrigger remembers the last scroll position and
+    // restores it on its next refresh, so that memory is cleared first (GSAP's SPA advice);
+    // the jump is instant so the page's smooth-scroll setting doesn't animate it.
+    ScrollTrigger.clearScrollMemory("manual");
     const root = document.documentElement;
     const prev = root.style.scrollBehavior;
     root.style.scrollBehavior = "auto";
-    window.scrollTo(0, 0);
+    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
     root.style.scrollBehavior = prev;
   }, [pathname]);
   return null;

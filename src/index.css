@@ -9,6 +9,9 @@
 @layer base {
   html {
     scroll-behavior: smooth;
+    /* Lazy routes swap a short placeholder for a tall page; without this Chrome
+       "anchors" the scroll to the footer and the new page opens mid-way down. */
+    overflow-anchor: none;
     background-color: #09090b;
     /* Prevent horizontal bounce from wide decorative elements */
     overflow-x: clip;

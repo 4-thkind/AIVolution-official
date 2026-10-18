@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 const INSTAGRAM = 'https://www.instagram.com/aivolutions.mait?stkn=MTAwbGdpdHI0enA0bQ%3D%3D';
 const LINKEDIN = 'https://www.linkedin.com/company/aivolutionaries/';
@@ -18,6 +18,9 @@ const LinkedInIcon = ({ className }) => (
 // Homepage footer: notebook "last page" — index cards, sticker socials, a hand-written sign-off.
 const PaperFooter = () => {
   const year = new Date().getFullYear();
+  const { pathname } = useLocation();
+  // Clicking the link for the page you're already on scrolls to its top (route change handles the rest).
+  const toTop = (to) => () => { if (pathname === to) window.scrollTo({ top: 0, behavior: 'instant' }); };
   const Card = ({ title, tone, children, rotate }) => (
     <div className="border-2 border-ink bg-cream shadow-[5px_5px_0_var(--ink)] transition-transform duration-200 hover:-translate-y-1" style={{ transform: `rotate(${rotate}deg)` }}>
       <div className="px-4 py-1.5 border-b-2 border-ink font-mono text-[0.65rem] tracking-[0.2em] uppercase" style={{ background: tone }}>{title}</div>
@@ -32,9 +35,9 @@ const PaperFooter = () => {
         <div className="grid md:grid-cols-3 gap-6 md:gap-8">
           <Card title="navigate" tone="var(--highlight)" rotate={-0.8}>
             <ul className="space-y-2.5">
-              <li><Link to="/" className={link}>home</Link></li>
-              <li><Link to="/events" className={link}>events</Link></li>
-              <li><Link to="/team" className={link}>team</Link></li>
+              <li><Link to="/" onClick={toTop('/')} className={link}>home</Link></li>
+              <li><Link to="/events" onClick={toTop('/events')} className={link}>events</Link></li>
+              <li><Link to="/team" onClick={toTop('/team')} className={link}>team</Link></li>
             </ul>
           </Card>
           <Card title="connect" tone="#9bd7ff" rotate={0.6}>
