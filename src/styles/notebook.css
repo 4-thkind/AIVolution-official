@@ -454,3 +454,15 @@
 .film-slider::-webkit-slider-thumb { -webkit-appearance: none; width: 22px; height: 22px; border-radius: 50%; background: var(--marker); border: 2px solid var(--ink); box-shadow: 2px 2px 0 var(--ink); cursor: grab; }
 .film-slider::-moz-range-thumb { width: 22px; height: 22px; border-radius: 50%; background: var(--marker); border: 2px solid var(--ink); box-shadow: 2px 2px 0 var(--ink); cursor: grab; }
 .film-slider:active::-webkit-slider-thumb { cursor: grabbing; }
+
+/* ---------- homepage footer: ID card ---------- */
+.idc.is-grabbed { cursor: grabbing; }
+/* connect: three socials orbit the button (spin layer turns, counter layer keeps them upright) */
+.idc-orbit { position: absolute; left: 50%; top: 50%; width: 0; height: 0; z-index: 1; pointer-events: none; }
+.idc-spin { position: absolute; inset: 0; animation: idc-spin 9s linear infinite; }
+.idc-orbit li { position: absolute; left: 0; top: 0; transform: rotate(var(--a)) translateX(138px) rotate(calc(-1 * var(--a))); }
+.idc-counter { display: block; animation: idc-spin 9s linear infinite reverse; }
+.idc-pop { display: block; transform: translate(-50%, -50%) scale(0); opacity: 0; transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.2s; transition-delay: calc(var(--i) * 70ms); }
+.idc-orbit.is-open .idc-pop { transform: translate(-50%, -50%) scale(1); opacity: 1; pointer-events: auto; }
+.idc-orbit:hover .idc-spin, .idc-orbit:hover .idc-counter { animation-play-state: paused; }
+@keyframes idc-spin { to { transform: rotate(360deg); } }
