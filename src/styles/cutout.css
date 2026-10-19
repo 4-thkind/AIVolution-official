@@ -1,0 +1,988 @@
+/* Cutout Visual Design System — Events Page */
+:root {
+  --cut-desk: #E7DFCE;
+  --cut-desk-edge: #D3C8B1;
+  --cut-mat: #2C4E3E;
+  --cut-mat-mottle: #356049;
+  --cut-mat-grid: rgba(233, 240, 216, 0.15);
+  --cut-mat-grid-bold: rgba(238, 244, 222, 0.32);
+  --cut-mat-wear: rgba(232, 240, 222, 0.11);
+  --cut-mat-label: rgba(244, 249, 236, 0.92);
+  --cut-sheet: #F6F1E6;
+  --cut-sheet-ink: #241F19;
+  --cut-shadow: rgba(38, 30, 20, 0.34);
+  --cut-stain: rgba(96, 64, 30, 0.3);
+}
+
+.cut-root {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+  background: var(--cut-desk);
+  cursor: none;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.cut-root[data-form="1"],
+.cut-root.is-modal-open {
+  cursor: auto;
+}
+
+.cut-cv {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* Desk link / Nav buttons */
+.desk-link {
+  position: absolute;
+  z-index: 70;
+  padding: 10px 16px 9px;
+  border-radius: 2px;
+  background: #F3EDE0;
+  color: #191510;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-decoration: none;
+  white-space: nowrap;
+  box-shadow: 2px 5px 0 rgba(20, 16, 10, 0.28);
+  transform: rotate(var(--rot, -1.4deg));
+  transform-origin: 50% 50%;
+  transition: box-shadow 0.16s ease, background 0.16s ease, transform 0.16s ease;
+  cursor: pointer;
+}
+
+.desk-link:hover {
+  background: #FFFCF4;
+  box-shadow: 3px 8px 0 rgba(20, 16, 10, 0.34);
+  transform: rotate(var(--rot, -1.4deg)) translateY(-1px);
+}
+
+.desk-link:active {
+  box-shadow: 1px 2px 0 rgba(20, 16, 10, 0.34);
+}
+
+.desk-link--top-left {
+  left: 3.4vw;
+  top: 3.6vh;
+}
+
+.desk-link--top-right {
+  right: 3.4vw;
+  top: 3.6vh;
+}
+
+/* Authentic physical photographic props */
+.cut-props {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 10;
+  transition: opacity 0.5s ease;
+}
+
+.cut-root[data-phase="sheet"] .cut-props {
+  opacity: 0;
+}
+
+.cut-prop {
+  position: absolute;
+  filter: drop-shadow(2px 5px 8px rgba(28, 22, 12, 0.35));
+}
+
+.cut-prop img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: contain;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+/* Category Cutout Strips on Mat */
+.cut-strip {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  z-index: 20;
+  cursor: pointer;
+  transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), filter 0.22s ease;
+  transform-origin: 50% 50%;
+}
+
+.cut-strip:hover {
+  filter: drop-shadow(4px 10px 14px rgba(20, 16, 10, 0.45));
+}
+
+.cut-strip-badge {
+  display: inline-block;
+  padding: clamp(6px, 0.7vw, 9px) clamp(12px, 1.4vw, 20px);
+  border-radius: 2px;
+  font-family: 'Archivo Black', Impact, sans-serif;
+  font-weight: 800;
+  font-size: clamp(19px, 2.4vw, 42px);
+  line-height: 1;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  box-shadow: 2px 5px 0 rgba(20, 16, 10, 0.32);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.cut-strip:hover .cut-strip-badge {
+  transform: translateY(-2px);
+  box-shadow: 4px 10px 0 rgba(20, 16, 10, 0.38);
+}
+
+.cut-strip-note {
+  margin-top: 6px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: clamp(9px, 0.75vw, 11px);
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(244, 249, 236, 0.88);
+  white-space: nowrap;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
+  pointer-events: none;
+}
+
+/* Main Heading Cutout Strip */
+.cut-heading-wrap {
+  position: absolute;
+  z-index: 25;
+  pointer-events: none;
+}
+
+.cut-heading-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: clamp(10px, 0.85vw, 13px);
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(244, 249, 236, 0.9);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
+  margin-bottom: 8px;
+}
+
+.cut-heading-badge {
+  display: inline-block;
+  background: #191715;
+  color: #FFF3E4;
+  padding: 10px 22px 9px;
+  border-radius: 2px;
+  font-family: 'Archivo Black', Impact, sans-serif;
+  font-weight: 800;
+  font-size: clamp(34px, 4.4vw, 68px);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  box-shadow: 3px 7px 0 rgba(20, 16, 10, 0.4);
+  transform: rotate(-2.5deg);
+}
+
+.cut-subheading-badge {
+  display: inline-block;
+  background: #EFB61F;
+  color: #241C10;
+  padding: 8px 18px 7px;
+  border-radius: 2px;
+  font-family: 'Archivo Black', Impact, sans-serif;
+  font-weight: 800;
+  font-size: clamp(26px, 3.4vw, 52px);
+  line-height: 1;
+  letter-spacing: -0.01em;
+  box-shadow: 2px 6px 0 rgba(20, 16, 10, 0.35);
+  transform: rotate(3deg);
+  margin-top: 10px;
+  margin-left: 20px;
+}
+
+.cut-pick-note {
+  margin-top: 18px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: clamp(10px, 0.8vw, 12px);
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(244, 249, 236, 0.85);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
+}
+
+/* Skip button during Cut/Stencil Animation */
+.cut-skip {
+  position: absolute;
+  z-index: 80;
+  right: 3.4vw;
+  top: 4vh;
+  background: none;
+  border: 0;
+  padding: 8px 12px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(240, 236, 222, 0.72);
+  cursor: pointer;
+  transition: color 0.18s ease;
+}
+
+.cut-skip:hover {
+  color: #FFFFFF;
+}
+
+/* Stencil Letters Cutting Stage */
+.cut-stage-cutting {
+  position: absolute;
+  inset: 0;
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.cut-stencil-word {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(4px, 1vw, 16px);
+  max-width: 90vw;
+  flex-wrap: nowrap;
+}
+
+.cut-stencil-char {
+  font-family: 'Archivo Black', Impact, sans-serif;
+  font-size: clamp(48px, 9.5vw, 150px);
+  line-height: 1;
+  text-transform: uppercase;
+  color: #FFF3E4;
+  text-shadow: 0 18px 36px rgba(0, 0, 0, 0.65), 0 2px 4px rgba(0, 0, 0, 0.4);
+  background-clip: text;
+  -webkit-background-clip: text;
+  background-size: cover;
+  background-position: center;
+  animation: cutLetterBounce 0.7s cubic-bezier(0.16, 1.4, 0.3, 1) both;
+}
+
+@keyframes cutLetterBounce {
+  from {
+    opacity: 0;
+    transform: scale(0.6) translateY(-40px) rotate(var(--rot-start, -10deg));
+    filter: blur(8px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0) rotate(0deg);
+    filter: blur(0);
+  }
+}
+
+/* Pinned Tape Hover effect with 4 corner markers & dashed outline */
+.cut-strip-pin-box {
+  position: absolute;
+  inset: -6px;
+  pointer-events: none;
+  border: 2px dashed rgba(253, 248, 233, 0.85);
+  animation: marchDashes 1.2s linear infinite;
+}
+
+@keyframes marchDashes {
+  to {
+    stroke-dashoffset: -20;
+  }
+}
+
+.cut-pin-corner {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  background: #FDF8E9;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+}
+
+.cut-pin-tl { top: -3px; left: -3px; }
+.cut-pin-tr { top: -3px; right: -3px; }
+.cut-pin-bl { bottom: -3px; left: -3px; }
+.cut-pin-br { bottom: -3px; right: -3px; }
+
+/* Contact Sheet View (Phase = Sheet) */
+.cut-sheet-container {
+  position: absolute;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4vh 4vw;
+  pointer-events: none;
+}
+
+.cut-sheet-card {
+  pointer-events: auto;
+  position: relative;
+  background: var(--cut-sheet);
+  color: var(--cut-sheet-ink);
+  width: min(1080px, 92vw);
+  max-height: 90vh;
+  border-radius: 3px;
+  box-shadow: 0 35px 70px -15px rgba(0, 0, 0, 0.55), 0 2px 0 rgba(255, 255, 255, 0.6) inset;
+  padding: clamp(20px, 2.5vw, 36px);
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  transform: rotate(-0.4deg);
+  animation: cutSheetIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes cutSheetIn {
+  from {
+    opacity: 0;
+    transform: rotate(-0.4deg) translateY(32px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: rotate(-0.4deg) translateY(0) scale(1);
+  }
+}
+
+.cut-sheet-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  border-bottom: 1.5px solid rgba(36, 31, 25, 0.15);
+  padding-bottom: 14px;
+  margin-bottom: 20px;
+}
+
+.cut-sheet-title {
+  font-family: 'Archivo Black', Impact, sans-serif;
+  font-weight: 800;
+  font-size: clamp(22px, 2.8vw, 38px);
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.cut-sheet-sub {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: clamp(9px, 0.75vw, 11px);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  opacity: 0.6;
+  margin-top: 4px;
+}
+
+.cut-sheet-counter {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: clamp(12px, 0.9vw, 14px);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  opacity: 0.7;
+  white-space: nowrap;
+}
+
+/* Contact Sheet Body (Split 2-Column Layout) */
+.cut-sheet-body {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: clamp(18px, 2.2vw, 36px);
+  align-items: center;
+}
+
+.cut-hero-frame {
+  position: relative;
+  background: #141210;
+  border: 10px solid #FFFFFF;
+  box-shadow: 0 16px 32px -10px rgba(0, 0, 0, 0.35);
+  border-radius: 2px;
+  overflow: hidden;
+  aspect-ratio: 1.35;
+}
+
+.cut-hero-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: opacity 0.3s ease;
+}
+
+.cut-details-col {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.cut-event-badge {
+  display: inline-block;
+  align-self: flex-start;
+  padding: 4px 10px;
+  border-radius: 2px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.cut-event-title {
+  font-family: 'Archivo Black', Impact, sans-serif;
+  font-weight: 800;
+  font-size: clamp(20px, 2.2vw, 32px);
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  margin: 0 0 12px;
+  color: var(--cut-sheet-ink);
+}
+
+.cut-event-desc {
+  font-family: 'Inter', sans-serif;
+  font-size: clamp(12px, 0.95vw, 15px);
+  line-height: 1.6;
+  opacity: 0.78;
+  margin: 0 0 16px;
+}
+
+.cut-event-meta {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: clamp(10px, 0.78vw, 12px);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  opacity: 0.55;
+  margin-bottom: 20px;
+}
+
+/* Action Button */
+.cut-cta-button {
+  border: 0;
+  border-radius: 2px;
+  padding: 12px 20px 11px;
+  background: #F3EDE0;
+  color: #191510;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  box-shadow: 2px 5px 0 rgba(20, 16, 10, 0.28);
+  transform: rotate(-1.1deg);
+  transition: box-shadow 0.16s ease, background 0.16s ease, transform 0.16s ease;
+  cursor: pointer;
+  align-self: flex-start;
+}
+
+.cut-cta-button:hover {
+  background: #FFFCF4;
+  box-shadow: 3px 8px 0 rgba(20, 16, 10, 0.34);
+  transform: rotate(-1.1deg) translateY(-1px);
+}
+
+.cut-cta-button:active {
+  box-shadow: 1px 2px 0 rgba(20, 16, 10, 0.34);
+}
+
+/* Event Deck / Event Switcher on Contact Sheet */
+.cut-deck-section {
+  margin-top: 24px;
+  padding-top: 18px;
+  border-top: 1px dashed rgba(36, 31, 25, 0.22);
+}
+
+.cut-deck-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.cut-deck-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(36, 31, 25, 0.7);
+}
+
+.cut-deck-hint {
+  font-family: 'Caveat', cursive;
+  font-size: 15px;
+  color: #DE3B22;
+  transform: rotate(-1.5deg);
+}
+
+.cut-deck-grid {
+  display: flex;
+  gap: 14px;
+  overflow-x: auto;
+  padding: 6px 4px 12px;
+  scrollbar-width: thin;
+}
+
+.cut-deck-grid::-webkit-scrollbar {
+  height: 5px;
+}
+
+.cut-deck-grid::-webkit-scrollbar-thumb {
+  background: rgba(36, 31, 25, 0.25);
+  border-radius: 2px;
+}
+
+.cut-deck-card {
+  position: relative;
+  flex: 0 0 clamp(180px, 19vw, 240px);
+  background: #FCF9F2;
+  border: 1px solid rgba(36, 31, 25, 0.2);
+  border-radius: 3px;
+  padding: 9px 9px 12px;
+  box-shadow: 2px 7px 16px -4px rgba(25, 20, 14, 0.2);
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  user-select: none;
+}
+
+.cut-deck-card:hover {
+  transform: translateY(-3px) rotate(0.4deg);
+  box-shadow: 3px 12px 22px -5px rgba(25, 20, 14, 0.3);
+}
+
+.cut-deck-card.is-active {
+  background: #FFFFFF;
+  border-color: #DE3B22;
+  box-shadow: 3px 12px 24px -4px rgba(222, 59, 34, 0.28);
+  transform: translateY(-3px) rotate(-0.5deg);
+}
+
+.cut-deck-card-photo {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1.45;
+  background: #141210;
+  border-radius: 2px;
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+
+.cut-deck-card-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.cut-deck-badge-count {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  background: rgba(20, 16, 12, 0.85);
+  color: #FFF3E4;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  padding: 2px 6px;
+  border-radius: 2px;
+  backdrop-filter: blur(2px);
+}
+
+.cut-deck-card-title {
+  font-family: 'Archivo Black', Impact, sans-serif;
+  font-size: 13px;
+  font-weight: 800;
+  line-height: 1.25;
+  color: #191715;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.cut-deck-card-date {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: rgba(25, 23, 21, 0.65);
+  letter-spacing: 0.06em;
+}
+
+/* Grease-Pencil Circle on selected deck card */
+.cut-grease-ring {
+  position: absolute;
+  inset: -8px;
+  pointer-events: none;
+  z-index: 10;
+}
+
+/* STYLISH CUTOUT ARCHIVAL MODAL */
+.cut-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 120;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(12px, 2.5vw, 28px);
+  background: rgba(18, 34, 26, 0.84);
+  backdrop-filter: blur(8px);
+  cursor: auto;
+  overflow-y: auto;
+}
+
+.cut-modal-dossier {
+  position: relative;
+  width: 100%;
+  max-width: 1040px;
+  max-height: 92vh;
+  overflow-y: auto;
+  background: #F6F1E6;
+  color: #241F19;
+  border: 1px solid rgba(25, 20, 14, 0.18);
+  border-radius: 3px;
+  padding: clamp(20px, 2.8vw, 36px);
+  box-shadow: 0 35px 80px -15px rgba(0, 0, 0, 0.65), 0 0 0 1px rgba(255, 255, 255, 0.3) inset;
+  transform: rotate(-0.25deg);
+}
+
+.cut-modal-top-bar {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  border-bottom: 1px solid rgba(36, 31, 25, 0.16);
+  padding-bottom: 16px;
+  margin-bottom: 22px;
+}
+
+.cut-modal-serial {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  color: #DE3B22;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.cut-modal-title {
+  font-family: 'Archivo Black', Impact, sans-serif;
+  font-size: clamp(22px, 2.8vw, 36px);
+  font-weight: 800;
+  line-height: 1.15;
+  text-transform: uppercase;
+  color: #191715;
+  margin: 0;
+}
+
+.cut-modal-close-btn {
+  border: 0;
+  border-radius: 2px;
+  padding: 8px 16px 7px;
+  background: #191715;
+  color: #FFF3E4;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  box-shadow: 2px 4px 0 rgba(20, 16, 10, 0.3);
+  cursor: pointer;
+  transition: transform 0.16s ease, background 0.16s ease;
+  white-space: nowrap;
+}
+
+.cut-modal-close-btn:hover {
+  background: #000000;
+  transform: translateY(-1px) rotate(1deg);
+}
+
+/* Modal Gallery Section */
+.cut-modal-gallery {
+  background: #EFE7DA;
+  border: 1px dashed rgba(36, 31, 25, 0.28);
+  border-radius: 3px;
+  padding: clamp(14px, 1.8vw, 20px);
+  margin-bottom: 24px;
+}
+
+.cut-modal-photo-stage {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1.6;
+  max-height: 480px;
+  background: #141210;
+  border: 8px solid #FFFFFF;
+  box-shadow: 0 14px 28px -8px rgba(20, 16, 10, 0.35);
+  border-radius: 2px;
+  overflow: hidden;
+  margin-bottom: 12px;
+}
+
+.cut-modal-photo-stage img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background: #141210;
+  display: block;
+}
+
+.cut-modal-nav-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  border: 0;
+  border-radius: 2px;
+  padding: 8px 12px;
+  background: rgba(25, 20, 14, 0.78);
+  color: #FFF;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  backdrop-filter: blur(4px);
+  transition: background 0.16s ease;
+}
+
+.cut-modal-nav-btn:hover {
+  background: rgba(0, 0, 0, 0.95);
+}
+
+.cut-modal-nav-btn.is-prev {
+  left: 10px;
+}
+
+.cut-modal-nav-btn.is-next {
+  right: 10px;
+}
+
+.cut-modal-photo-info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  color: rgba(36, 31, 25, 0.75);
+}
+
+/* Modal Thumbnails Strip */
+.cut-modal-strip {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  padding: 4px 2px 8px;
+  scrollbar-width: thin;
+}
+
+.cut-modal-thumb {
+  position: relative;
+  flex: 0 0 85px;
+  aspect-ratio: 1.35;
+  background: #141210;
+  border: 3px solid #FFF;
+  box-shadow: 1px 3px 6px rgba(20, 16, 10, 0.25);
+  border-radius: 2px;
+  cursor: pointer;
+  overflow: hidden;
+  transition: transform 0.18s ease;
+}
+
+.cut-modal-thumb:hover {
+  transform: translateY(-2px);
+}
+
+.cut-modal-thumb.is-active {
+  border-color: #DE3B22;
+  box-shadow: 0 0 0 2px #DE3B22, 2px 6px 12px rgba(222, 59, 34, 0.3);
+  transform: translateY(-2px);
+}
+
+.cut-modal-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Modal Dossier Story Content */
+.cut-modal-story {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+
+.cut-modal-section-card {
+  background: rgba(255, 255, 255, 0.55);
+  border: 1px solid rgba(36, 31, 25, 0.1);
+  border-radius: 2px;
+  padding: 16px 20px;
+}
+
+.cut-modal-sec-head {
+  font-family: 'Archivo Black', Impact, sans-serif;
+  font-size: 15px;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: #191715;
+  margin: 0 0 8px;
+  letter-spacing: -0.01em;
+}
+
+.cut-modal-sec-body {
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  line-height: 1.65;
+  color: rgba(36, 31, 25, 0.82);
+  margin: 0;
+}
+
+/* Bottom Bar Controls */
+.cut-sheet-bar {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 2.5vh;
+  z-index: 60;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 4vw;
+  pointer-events: auto;
+}
+
+.cut-back-button {
+  border: 0;
+  padding: 10px 18px 9px;
+  border-radius: 2px;
+  background: rgba(14, 26, 20, 0.72);
+  backdrop-filter: blur(4px);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(240, 246, 232, 0.95);
+  box-shadow: 2px 4px 0 rgba(20, 16, 10, 0.28);
+  cursor: pointer;
+  transition: background 0.16s ease, transform 0.16s ease;
+}
+
+.cut-back-button:hover {
+  background: rgba(14, 26, 20, 0.9);
+  color: #FFFFFF;
+  transform: translateY(-1px);
+}
+
+.cut-category-switcher {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.cut-chip-tab {
+  border: 0;
+  border-radius: 2px;
+  padding: 7px 14px 6px;
+  font-family: 'Archivo Black', Impact, sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  cursor: pointer;
+  box-shadow: 1px 3px 0 rgba(20, 16, 10, 0.25);
+  opacity: 0.65;
+  transition: opacity 0.18s ease, transform 0.18s ease;
+}
+
+.cut-chip-tab:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+.cut-chip-tab.is-active {
+  opacity: 1;
+  transform: rotate(-1.5deg) translateY(-2px);
+  box-shadow: 2px 5px 0 rgba(20, 16, 10, 0.35);
+}
+
+/* Custom Pixel Cursor */
+.cut-cursor {
+  position: absolute;
+  top: -2px;
+  left: -3px;
+  width: 26px;
+  z-index: 999;
+  pointer-events: none;
+  filter: drop-shadow(2px 3px 2px rgba(20, 16, 10, 0.4));
+  will-change: transform;
+}
+
+/* Responsive Overrides */
+@media (max-width: 900px) {
+  .cut-sheet-body {
+    grid-template-columns: 1fr;
+  }
+  .cut-hero-frame {
+    aspect-ratio: 1.5;
+  }
+}
+
+@media (max-width: 760px) {
+  .cut-cursor {
+    display: none;
+  }
+  .cut-root {
+    cursor: auto;
+  }
+  .desk-link {
+    font-size: 10px;
+    padding: 8px 12px 7px;
+  }
+  .cut-sheet-bar {
+    flex-direction: column;
+    gap: 8px;
+    bottom: 8px;
+  }
+  .cut-back-button {
+    font-size: 10px;
+    padding: 7px 12px;
+  }
+  .cut-category-switcher {
+    justify-content: center;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+  .cut-chip-tab {
+    font-size: 8px;
+    padding: 5px 8px;
+  }
+}
+
+@media (max-width: 640px) {
+  .cut-sheet-card {
+    padding: 22px 14px 170px;
+    margin: 6px 0 60px;
+  }
+  .cut-sheet-title {
+    font-size: clamp(24px, 8.5vw, 36px);
+  }
+}
+

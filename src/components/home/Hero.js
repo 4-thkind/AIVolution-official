@@ -1,65 +1,19 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useGSAP } from '@gsap/react';
 import { gsap, prefersReducedMotion } from '../../lib/gsap';
-import { DEPARTMENTS } from '../../data/departments';
 import { EVENTS } from '../../data/events';
 import { useDraggable } from './useDraggable';
 import { willBoot, BOOT_SECONDS } from './Boot';
-import { SectionLabel, Mark, Tape, PostIt, Scribble, Sticker, StickerButton, Perforation, shortHash, WHATSAPP } from './scrap';
-
-// Hand-drawn network of what the society actually is:
-// what we run (event types) → who runs it (the four departments) → AI creators.
-const INPUTS = ['hackathons', 'workshops', 'webinars', 'industrial visits'];
-const HIDDEN = DEPARTMENTS.map((d) => d.title.replace('Management', 'Mgmt').replace('Public Relations', 'PR'));
-// Portrait: flows top → bottom so it fills the right column instead of a thin strip.
-const Y = { input: 100, hidden: 340, output: 575 };
-const xs = (n) => Array.from({ length: n }, (_, i) => 52 + i * 126);
-
-const NeuralDoodle = ({ className }) => {
-  const ix = xs(INPUTS.length);
-  const hx = xs(HIDDEN.length);
-  const ox = 52 + ((HIDDEN.length - 1) * 126) / 2;
-  return (
-    <svg viewBox="0 0 480 640" className={className} fill="none" overflow="visible" aria-hidden="true">
-      <defs>
-        <filter id="wobble" x="-5%" y="-5%" width="110%" height="110%">
-          <feTurbulence baseFrequency="0.02" numOctaves="2" seed="7" />
-          <feDisplacementMap in="SourceGraphic" scale="4" />
-        </filter>
-      </defs>
-      <g stroke="var(--pen)" strokeWidth="1.8" strokeLinecap="round" opacity="0.55" filter="url(#wobble)">
-        {ix.flatMap((x1) => hx.map((x2) => (
-          <path key={`i${x1}-${x2}`} className="edge" d={`M${x1} ${Y.input} C ${x1} ${Y.input + 120}, ${x2} ${Y.hidden - 120}, ${x2} ${Y.hidden}`} />
-        )))}
-        {hx.map((x1) => (
-          <path key={`h${x1}`} className="edge" d={`M${x1} ${Y.hidden} C ${x1} ${Y.hidden + 110}, ${ox} ${Y.output - 110}, ${ox} ${Y.output}`} />
-        ))}
-      </g>
-      <g className="font-mono" fontSize="10" fill="var(--pencil)" letterSpacing="2">
-        <text x="0" y={Y.input - 62}>WHAT WE RUN</text>
-        <text x="0" y={Y.hidden + 78}>WHO RUNS IT</text>
-        <text x={ox} y={Y.output + 84} textAnchor="middle">OUTPUT</text>
-      </g>
-      <g className="font-hand" fontSize="20" fill="var(--pencil)">
-        {ix.map((x, i) => <text key={i} x={x} y={Y.input - (i % 2 ? 44 : 24)} textAnchor="middle">{INPUTS[i]}</text>)}
-        {hx.map((x, i) => <text key={i} x={x} y={Y.hidden + (i % 2 ? 54 : 36)} textAnchor="middle">{HIDDEN[i]}</text>)}
-        <text x={ox} y={Y.output + 56} textAnchor="middle" fontSize="28" fill="var(--ink)" fontWeight="700">AI creators</text>
-      </g>
-      <g>
-        {ix.map((x) => <circle key={`i${x}`} className="node" cx={x} cy={Y.input} r="12" fill="var(--paper)" stroke="var(--ink)" strokeWidth="2.5" />)}
-        {hx.map((x) => <circle key={`h${x}`} className="node" cx={x} cy={Y.hidden} r="12" fill="var(--highlight)" stroke="var(--ink)" strokeWidth="2.5" />)}
-        <circle className="node" cx={ox} cy={Y.output} r="19" fill="var(--marker)" stroke="var(--ink)" strokeWidth="2.5" />
-      </g>
-    </svg>
-  );
-};
+import { HeroNetwork } from './HeroNetwork';
+import { SectionLabel, Mark, Tape, Sticker, StickerButton, Perforation, shortHash, WHATSAPP } from './scrap';
 
 // Real numbers from src/data/events.js, as fridge-magnet stickers you can fling.
 const STICKERS = [
-  { text: "Codex Hackathon '25 · 60+ teams", bg: '#ffe85c', r: -8, cls: 'top-[15%] right-[26%] hidden lg:inline-flex' },
-  { text: '₹19,000+ in prizes', bg: '#141414', fg: '#f3eee2', r: 6, cls: 'top-[13%] right-[3%]' },
-  { text: 'hands-on, not slides', bg: '#ff8fb1', r: -5, cls: 'bottom-[13%] right-[30%] hidden lg:inline-flex' },
+// Parked around the network so they never cover a node.
+  { text: "Codex Hackathon '25 · 60+ teams", bg: '#ffe85c', r: -8, cls: 'top-[11%] right-[30%] hidden lg:inline-flex' },
+  { text: '₹19,000+ in prizes', bg: '#141414', fg: '#f3eee2', r: 6, cls: 'top-[13%] right-[3%] lg:top-[10%]' },
+  { text: 'hands-on, not slides', bg: '#ff8fb1', r: -5, cls: 'bottom-[8%] right-[1%] hidden 2xl:inline-flex' },
   { text: 'build it, don\'t just watch', bg: '#2f6bff', fg: '#fff', r: 9, cls: 'top-[47%] right-[0%] hidden 2xl:inline-flex' },
 ];
 
@@ -67,11 +21,13 @@ const featured = EVENTS.find((e) => e.featured) || EVENTS[0];
 
 export const Hero = () => {
   const root = useRef(null);
+  const net = useRef(null);
+  const [introDelay] = useState(() => (willBoot() ? BOOT_SECONDS - 0.2 : 0.15));
   useDraggable(root, '.hero-sticker');
 
-  useGSAP(
+  const { contextSafe } = useGSAP(
     () => {
-      const delay = willBoot() ? BOOT_SECONDS - 0.2 : 0.15;
+      const delay = introDelay;
       const tl = gsap.timeline({ delay, defaults: { ease: 'expo.out' } });
       tl.from('.mask-line > span', { yPercent: 110, duration: 1.1, stagger: 0.1 })
         .from('.hero-fade', { y: 20, opacity: 0, duration: 0.8, stagger: 0.08 }, '-=0.6')
@@ -79,17 +35,23 @@ export const Hero = () => {
         .from('.hero-sticker', { scale: 0, opacity: 0, duration: 0.6, ease: 'back.out(2.5)', stagger: 0.07 }, '-=0.5');
 
       if (prefersReducedMotion()) return undefined;
-      gsap.from('.edge', { drawSVG: '0%', duration: 1.4, ease: 'power2.inOut', stagger: 0.03, delay: delay + 0.2 });
-      gsap.to('.node', {
-        scale: 1.25, transformOrigin: 'center', duration: 1.4, ease: 'sine.inOut',
-        yoyo: true, repeat: -1, stagger: { each: 0.12, from: 'random' },
-      });
       gsap.to('.scroll-cue', { y: 6, duration: 0.9, ease: 'sine.inOut', yoyo: true, repeat: -1 });
 
       return undefined;
     },
     { scope: root }
   );
+
+  // "AI creators." re-types itself and fires the network's forward pass into its output node.
+  const toCreators = contextSafe((e) => {
+    if (net.current) net.current.fire('out');
+    if (prefersReducedMotion()) return;
+    gsap.to(e.currentTarget, {
+      duration: 0.9, overwrite: true,
+      scrambleText: { text: 'AI creators.', chars: 'aivolutions01', speed: 0.6 },
+    });
+  });
+  const firePass = () => net.current && net.current.fire('out');
 
   // Pointer flashlight reveals the blue ink grid (plain effect: useGSAP ignores returned cleanups).
   useEffect(() => {
@@ -118,7 +80,7 @@ export const Hero = () => {
           <h1 className="text-[clamp(2.9rem,6.4vw,6.6rem)]">
             <span className="mask-line"><span>we turn AI</span></span>
             <span className="mask-line"><span><span className="strike font-hand font-medium tracking-normal text-pencil">users</span> into</span></span>
-            <span className="mask-line"><span><Mark>AI creators.</Mark></span></span>
+            <span className="mask-line"><span><Mark><span className="cursor-default" onMouseEnter={toCreators}>AI creators.</span></Mark></span></span>
           </h1>
 
           <p className="hero-fade mt-7 max-w-xl text-lg md:text-xl leading-relaxed text-pencil">
@@ -128,10 +90,10 @@ export const Hero = () => {
           </p>
 
           <div className="hero-fade mt-8 flex flex-wrap items-center gap-4">
-            <StickerButton href={WHATSAPP} target="_blank" rel="noreferrer" bg="var(--highlight)" rotate={-1.5}>
+            <StickerButton href={WHATSAPP} target="_blank" rel="noreferrer" bg="var(--highlight)" rotate={-1.5} onMouseEnter={firePass}>
               Join AIvolutions <span aria-hidden="true">→</span>
             </StickerButton>
-            <StickerButton to="/events" bg="#fff" rotate={1}>See our events</StickerButton>
+            <StickerButton to="/events" bg="#fff" rotate={1} onMouseEnter={firePass}>See our events</StickerButton>
           </div>
 
           <div className="hero-fade mt-10 flex flex-wrap items-center gap-4">
@@ -150,12 +112,8 @@ export const Hero = () => {
           </div>
         </div>
 
-        <div className="relative mx-auto lg:mr-6 xl:mr-10">
-          <NeuralDoodle className="hero-fade w-full max-w-[440px] lg:max-w-none lg:w-auto lg:h-[min(74vh,860px)] select-none pointer-events-none" />
-          <div className="hero-fade hidden lg:flex items-end gap-0 absolute bottom-2 left-[62%]">
-            <Scribble className="w-14 mb-6 shrink-0" flip />
-            <PostIt rotate={4} className="text-xl whitespace-nowrap">where curiosity<br />becomes capability</PostIt>
-          </div>
+        <div className="hero-fade relative mx-auto w-full max-w-[520px] lg:w-[min(42vw,520px)] lg:max-w-none lg:mr-6 xl:mr-10">
+          <HeroNetwork ref={net} introDelay={introDelay} />
         </div>
       </div>
 

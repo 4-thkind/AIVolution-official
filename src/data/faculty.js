@@ -1,22 +1,25 @@
+const maitPeopleSearch = (name) =>
+  `https://www.linkedin.com/search/results/people/?keywords=${encodeURIComponent(`${name} MAIT`)}`;
+
 export const FACULTY = [
     {
         name: "Dr. Vinay Kumar Saini",
         role: "HOD AI&DS",
-        linkedin: "https://www.linkedin.com/school/7942020/",
+        linkedin: "https://www.linkedin.com/in/vinaykumarsaini",
         imgUrl: "https://i.postimg.cc/L6Q15nTX/1640103425941.jpg",
         imgPosition: "object-top"
     },
     {
         name: "Dr. Anshu Khurana",
         role: "Assistant Professor",
-        linkedin: "https://www.linkedin.com/school/7942020/",
+        linkedin: "https://www.linkedin.com/in/dranshukhurana",
         imgUrl: "https://i.postimg.cc/qM6S3LGL/anshu.jpg",
         imgPosition: "object-[center_20%]"
     },
     {
         name: "Mr. Nitin Garg",
         role: "Assistant Professor",
-        linkedin: "https://www.linkedin.com/school/7942020/",
+        linkedin: "https://www.linkedin.com/in/nitin-garg-3a847644",
         imgUrl: "https://i.postimg.cc/NjrwmKHs/Whats-App-Image-2026-09-08-at-20-33-26.jpg",
         imgPosition: "object-top"
     },
@@ -37,21 +40,21 @@ export const FACULTY = [
     {
         name: "Dr. Sandeep Kumar",
         role: "Professor",
-        linkedin: "https://www.linkedin.com/school/7942020/",
+        linkedin: "https://www.linkedin.com/in/dr-sandeep-kumar/",
         imgUrl: "https://i.postimg.cc/Bvqd7SD9/sandeep.jpg",
         imgPosition: "object-top"
     },
     {
         name: "Dr. Mohit Mittal",
         role: "Assistant Professor",
-        linkedin: "https://www.linkedin.com/school/7942020/",
+        linkedin: maitPeopleSearch("Dr. Mohit Mittal"),
         imgUrl: "https://i.postimg.cc/j52BKMZ3/mohit.jpg",
         imgPosition: "object-top"
     },
     {
         name: "Nitish Uppal",
         role: "Assistant Professor",
-        linkedin: "https://www.linkedin.com/school/7942020/",
+        linkedin: "https://www.linkedin.com/in/nitish-uppal-47231255",
         imgUrl: "https://i.postimg.cc/MG41nrVF/1712746260400.jpg",
         imgPosition: "object-top"
     }

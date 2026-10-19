@@ -466,3 +466,34 @@
 .idc-orbit.is-open .idc-pop { transform: translate(-50%, -50%) scale(1); opacity: 1; pointer-events: auto; }
 .idc-orbit:hover .idc-spin, .idc-orbit:hover .idc-counter { animation-play-state: paused; }
 @keyframes idc-spin { to { transform: rotate(360deg); } }
+
+/* ---------- hero network (HeroNetwork.js) ---------- */
+.hn-edge { stroke: var(--pen); stroke-width: 1.8; opacity: 0.55; transition: opacity 0.3s, stroke 0.3s, stroke-width 0.3s; }
+.hn-net[data-active] .hn-edge { opacity: 0.14; }
+.hn-net[data-active] .hn-edge.is-lit { opacity: 0.95; stroke: var(--ink); stroke-width: 2.4; }
+.hn-signal { stroke-width: 5; stroke-linecap: round; pointer-events: none; }
+.hn-node { outline: none; cursor: pointer; transition: opacity 0.3s; }
+.hn-node.is-dim { opacity: 0.45; }
+@media (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .hn-node { cursor: grab; }
+  .hn-node:active { cursor: grabbing; }
+}
+.hn-core { transform-box: fill-box; transform-origin: center; transition: transform 0.35s var(--ease-out); }
+.hn-node:hover .hn-core, .hn-node.is-active .hn-core { transform: scale(1.3); }
+.hn-node:focus-visible .hn-dot { stroke: var(--pen); stroke-width: 4; }
+.hn-label { fill: var(--pencil); transition: fill 0.25s; }
+.hn-label--out, .hn-node.is-active .hn-label { fill: var(--ink); }
+.hn-node.is-active .hn-label { font-weight: 700; }
+.hn-card {
+  background: var(--cream);
+  border: 1.5px solid rgba(20, 20, 20, 0.8);
+  border-radius: 3px;
+  box-shadow: 0 14px 28px -16px rgba(20, 20, 20, 0.45), 0 2px 0 rgba(20, 20, 20, 0.08);
+  transform: rotate(1.2deg);
+}
+.hn-readout-in { animation: hn-in 0.4s var(--ease-out) both; }
+@keyframes hn-in { from { opacity: 0; transform: translateY(8px); } }
+@media (prefers-reduced-motion: reduce) {
+  .hn-readout-in { animation: none; }
+  .hn-core { transition: none; }
+}
