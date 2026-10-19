@@ -7,7 +7,7 @@ import { useActiveCell } from './useActiveCell';
 import { SectionLabel, Hand, PostIt, StickerButton, Stamp, Sticker, WHATSAPP } from './scrap';
 import { useDraggable } from './useDraggable';
 
-export const INSTAGRAM = 'https://www.instagram.com/aivolutions.mait?stkn=MTAwbGdpdHI0enA0bQ%3D%3D';
+export const INSTAGRAM = 'https://www.instagram.com/aivolutions.mait';
 export const LINKEDIN = 'https://www.linkedin.com/company/aivolutionaries/';
 
 // The "clone" output that types itself in when the terminal scrolls into view.

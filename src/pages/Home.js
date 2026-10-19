@@ -8,7 +8,6 @@ import { Events } from '../components/home/Events';
 import { Contributors } from '../components/home/Contributors';
 import { Sponsors } from '../components/home/Sponsors';
 import { Join } from '../components/home/Join';
-import { FooterArt } from '../components/home/FooterArt';
 
 export const Home = () => (
   <main className="nb">
@@ -21,6 +20,5 @@ export const Home = () => (
     <Contributors />
     <Sponsors />
     <Join />
-    <FooterArt />
   </main>
 );
