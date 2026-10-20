@@ -4,7 +4,7 @@ import { useGSAP } from '@gsap/react';
 import { gsap, prefersReducedMotion } from '../../lib/gsap';
 import { EVENTS } from '../../data/events';
 import { useDraggable } from './useDraggable';
-import { willBoot, BOOT_SECONDS } from './Boot';
+import { willPreload, PRELOADER_REVEAL_SECONDS } from '../../lib/preloader';
 import { HeroNetwork } from './HeroNetwork';
 import { SectionLabel, Mark, Tape, Sticker, StickerButton, Perforation, shortHash, WHATSAPP } from './scrap';
 
@@ -22,7 +22,7 @@ const featured = EVENTS.find((e) => e.featured) || EVENTS[0];
 export const Hero = () => {
   const root = useRef(null);
   const net = useRef(null);
-  const [introDelay] = useState(() => (willBoot() ? BOOT_SECONDS - 0.2 : 0.15));
+  const [introDelay] = useState(() => (willPreload() ? PRELOADER_REVEAL_SECONDS : 0.15));
   useDraggable(root, '.hero-sticker');
 
   const { contextSafe } = useGSAP(

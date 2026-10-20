@@ -1,5 +1,4 @@
 import React from 'react';
-import { Boot } from '../components/home/Boot';
 import { Hero } from '../components/home/Hero';
 import { GitLog } from '../components/home/GitLog';
 import { About } from '../components/home/About';
@@ -11,7 +10,6 @@ import { Join } from '../components/home/Join';
 
 export const Home = () => (
   <main className="nb">
-    <Boot />
     <Hero />
     <GitLog />
     <About />

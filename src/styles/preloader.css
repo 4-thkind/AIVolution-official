@@ -1,0 +1,231 @@
+/* Full-screen intro: a human hand and an AI hand meet on the site's paper.
+   Every layer shares one canvas (1223 × 1337), so they stack with no alignment code.
+   The touch point sits at (--sx, --sy) in that canvas. */
+.pl {
+  --paper: #f3eee2;
+  --ink: #141414;
+  --mint: #3ae88a;
+  --pencil: #6b6860;
+  /* Riso palette lifted from the artwork: tan paper-cut, brick red shading, teal mesh. */
+  --tan: #c4a582;
+  --tan-light: #e4d0b0;
+  --brick: #9c2f2b;
+  --teal: #5fa797;
+  --teal-deep: #3f8576;
+  /* The notebook scraps read these site variables, so re-point them at the riso palette here. */
+  --redpen: var(--brick);
+  --pen: var(--teal-deep);
+  --highlight: var(--tan-light);
+  --sx: 57.48%;
+  --sy: 52.21%;
+  position: fixed;
+  inset: 0;
+  z-index: 9990;
+  background: var(--paper);
+  color: var(--ink);
+  cursor: pointer;
+  user-select: none;
+  will-change: transform;
+}
+.pl::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.06;
+  mix-blend-mode: multiply;
+  background-size: 220px 220px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* Everything clips inside the body; the torn edge hangs below the sheet and rides up with it. */
+.pl-body {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+.pl-tear {
+  position: absolute;
+  left: 0;
+  top: 100%;
+  width: 100%;
+  height: 28px;
+  margin-top: -1px;
+  pointer-events: none;
+}
+
+/* The Hero's own surface (dot grid + blue ink grid), so the lift reads as one sheet of paper. */
+.pl-bg { position: absolute; inset: 0; pointer-events: none; }
+.pl .pl-inkgrid {
+  position: absolute;
+  inset: 0;
+  opacity: 0.35;
+  -webkit-mask-image: radial-gradient(ellipse 55% 50% at 50% 47%, #000 0%, transparent 100%);
+  mask-image: radial-gradient(ellipse 55% 50% at 50% 47%, #000 0%, transparent 100%);
+}
+.pl-vignette {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(ellipse 80% 75% at 50% 47%, transparent 55%, rgba(70, 30, 22, 0.1) 100%);
+}
+
+.pl-stage {
+  position: absolute;
+  left: 50%;
+  top: 47%;
+  aspect-ratio: 1223 / 1337;
+  height: min(84svh, calc(96vw * 1337 / 1223));
+  transform: translate(-50%, -50%);
+}
+
+.pl-art, .pl-scraps {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.pl-art { will-change: transform; }
+
+.pl-layer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  opacity: 0;
+  pointer-events: none;
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+}
+.pl-spark { transform-origin: var(--sx) var(--sy); }
+
+/* Effects anchored on a point; GSAP centres them with xPercent/yPercent. */
+.pl-fx {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+  will-change: transform, opacity;
+}
+.pl-glow {
+  left: var(--sx);
+  top: var(--sy);
+  width: 95%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  mix-blend-mode: multiply;
+  background: radial-gradient(circle, rgba(194, 59, 46, 0.5) 0%, rgba(194, 59, 46, 0.18) 32%, rgba(194, 59, 46, 0) 66%);
+}
+.pl-glow--monitor {
+  left: 26%;
+  top: 17.4%;
+  width: 62%;
+  background: radial-gradient(circle, rgba(95, 167, 151, 0.55) 0%, rgba(95, 167, 151, 0.18) 38%, rgba(95, 167, 151, 0) 68%);
+}
+.pl-core {
+  left: var(--sx);
+  top: var(--sy);
+  width: 3.2%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(circle, #fff8ea 0 26%, #f4cfa6 42%, #c23b2e 66%, rgba(194, 59, 46, 0) 74%);
+  box-shadow: 0 0 14px 4px rgba(194, 59, 46, 0.5);
+}
+.pl-ring {
+  left: var(--sx);
+  top: var(--sy);
+  width: 12%;
+  aspect-ratio: 1;
+  overflow: visible;
+}
+.pl-ring circle {
+  fill: none;
+  stroke: var(--brick);
+  stroke-width: 1.6;
+  vector-effect: non-scaling-stroke;
+}
+.pl-cross {
+  left: var(--sx);
+  top: var(--sy);
+  width: 46%;
+  height: 1.5px;
+  background: linear-gradient(90deg, transparent, var(--brick) 30%, var(--brick) 70%, transparent);
+}
+
+.pl-dot {
+  left: var(--sx);
+  top: var(--sy);
+  width: var(--d, 7px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: var(--tan);
+  border: 2px solid var(--brick);
+}
+.pl-dot:nth-child(3n + 1) { background: var(--teal); border-color: var(--teal-deep); }
+.pl-dot:nth-child(3n + 2) { background: #d65a47; border-color: var(--brick); }
+
+/* Scraps: notebook bits stuck on the stage. The art fills the stage, so they sit in its empty
+   corners; on wide screens the stickers move out onto the paper beside it. */
+.pl-scraps { will-change: transform; }
+.pl-scrap {
+  position: absolute;
+  opacity: 0;
+  will-change: transform, opacity;
+}
+.pl-tape--a { left: 8%; top: 4%; }
+.pl-tape--b { left: 80%; top: 83%; }
+.pl-tape .tape { display: block; width: 5.4rem; height: 1.5rem; padding: 0; background-color: rgba(196, 165, 130, 0.88); }
+.pl-tape .tape--pink { background-color: rgba(95, 167, 151, 0.85); }
+.pl-note { opacity: 1; font-size: clamp(1.7rem, 2.7vw, 2.5rem); line-height: 1; }
+.pl-note-text { font-weight: 700; opacity: 0; }
+.pl-arrow-wrap { position: absolute; width: 6rem; pointer-events: none; }
+.pl-arrow { display: block; width: 100%; overflow: visible; }
+.pl-note--ai { left: 58%; top: 2%; }
+.pl-note--ai .pl-arrow-wrap { right: 100%; top: 1.5rem; transform: rotate(-14deg); }
+.pl-note--human { left: 25%; top: 87%; }
+.pl-note--human .pl-arrow-wrap { left: 115%; top: -2.4rem; width: 6.5rem; }
+.pl-scrap--stk1 { left: 1%; top: 93%; }
+.pl-scrap--stk2 { right: 0; top: 13%; }
+.pl .sticker { font-size: clamp(0.8rem, 1.5vw, 1.05rem); cursor: inherit; }
+.pl-scrap--stamp { left: 17%; top: 62%; }
+.pl .stamp { font-size: clamp(1.1rem, 2vw, 1.6rem); opacity: 1; mix-blend-mode: normal; background: rgba(243, 238, 226, 0.55); }
+@media (min-width: 1200px) {
+  .pl-scrap--stk1 { left: auto; right: calc(100% + 1.5rem); top: 30%; }
+  .pl-scrap--stk2 { right: auto; left: calc(100% + 1.5rem); top: 58%; }
+  .pl .sticker { font-size: 1.15rem; }
+}
+@media (max-width: 479px) {
+  .pl-scrap:not(.pl-scrap--stamp) { display: none; }
+}
+
+.pl-hud {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 0 clamp(1rem, 3vw, 2.5rem) clamp(1rem, 2.6vh, 1.75rem);
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--pencil);
+}
+.pl-hud-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 0.7rem;
+}
+.pl-hud-rule {
+  height: 1.5px;
+  background: rgba(20, 20, 20, 0.14);
+}
+.pl-hud-bar {
+  height: 100%;
+  background: var(--ink);
+  transform: scaleX(0);
+  transform-origin: left;
+}
+.pl-pct { color: var(--ink); font-variant-numeric: tabular-nums; }
+@media (max-width: 480px) {
+  .pl-hud-skip { display: none; }
+}

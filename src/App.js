@@ -2,6 +2,7 @@ import React, { useState, useEffect, lazy, Suspense } from 'react';
 import  {NavBar}  from "./components/NavBar";
 import { Footer } from "./components/Footer";
 import MouseFollower from './components/MouseFollower';
+import { Preloader } from "./components/Preloader";
 import { Routes, Route, useLocation } from "react-router-dom";
 import { Home } from "./pages/Home";
 import "./styles/notebook.css";
@@ -25,6 +26,7 @@ function App() {
   const variant = "paper";
   return (
     <div className={`relative min-h-screen ${variant === "paper" ? "text-ink bg-paper" : "text-white"}`}>
+      <Preloader />
       <MouseFollower />
 
       <div className="relative z-10">
